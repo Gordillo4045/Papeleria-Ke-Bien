@@ -4,24 +4,34 @@ import {MailIcon} from '../assets/MailIcon.jsx'
 // @ts-ignore
 import {LockIcon} from '../assets/LockIcon.jsx'
 import { useState } from "react"
-//import { auth } from "../Config/Config.tsx"
+import { auth } from "../Config/Config.tsx"
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function App() {
-  const {isOpen, onOpen, onOpenChange} = useDisclosure()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
 
-  //const [errorMsg, setErrorMsg] = useState('')
-  //const [successMsg, setSuccessMsg] = useState('')
-
-//   const handleLogin=(e)=>{
-//     e.preventDefault()
-//     auth
-//   }
-
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+       // @ts-ignore
+    const onLogin = (e) => {
+        e.preventDefault()
+        signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+            window.location.href = '/controlpanel'
+            //const user = userCredential.user;
+            //console.log(user);
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage)
+        })
+    }
+    //<Button onPress={onOpen} color="primary">Iniciar sesion</Button>
+    //
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
   return (
     <>
-      <Button onPress={onOpen} color="primary">Iniciar sesion</Button>
+    <Button onPress={onOpen} color="primary">Iniciar sesion</Button>
       <Modal 
         isOpen={isOpen} 
         onOpenChange={onOpenChange}
@@ -59,7 +69,7 @@ export default function App() {
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Cerrar
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onClick={onLogin}>
                   Iniciar sesion
                 </Button>
               </ModalFooter>

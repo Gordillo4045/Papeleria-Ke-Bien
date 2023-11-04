@@ -1,6 +1,8 @@
 import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
+import {Pagination} from "@nextui-org/react";
 
-export default function App() {
+
+    export default function App() {
   const list = [
     {
       title: "Orange",
@@ -62,12 +64,53 @@ export default function App() {
         img: "/images/fruit-8.jpeg",
         price: "$12.20",
       },
+      {
+        title: "Banana",
+        img: "/images/fruit-7.jpeg",
+        price: "$7.50",
+      },
+      {
+        title: "Watermelon",
+        img: "/images/fruit-8.jpeg",
+        price: "$12.20",
+      },
+      {
+        title: "Banana",
+        img: "/images/fruit-7.jpeg",
+        price: "$7.50",
+      },
+      {
+        title: "Watermelon",
+        img: "/images/fruit-8.jpeg",
+        price: "$12.20",
+      },
+      {
+        title: "Banana",
+        img: "/images/fruit-7.jpeg",
+        price: "$7.50",
+      },
+      {
+        title: "Watermelon",
+        img: "/images/fruit-8.jpeg",
+        price: "$12.20",
+      },
+      {
+        title: "Banana",
+        img: "/images/fruit-7.jpeg",
+        price: "$7.50",
+      },
+      {
+        title: "Watermelon",
+        img: "/images/fruit-8.jpeg",
+        price: "$12.20",
+      },
   ];
 
   return (
-    <div className="m-10 gap-2 grid grid-cols-2 sm:grid-cols-4 sm:ml-10 ">
+    <>
+    <div className=" place-items-center grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
       {list.map((item, index) => (
-        <Card shadow="sm" key={index}>
+        <Card className="w-10/12 mb-6" shadow="sm" key={index}>
           <CardBody className="overflow-visible p-0">
             <Image
               shadow="sm"
@@ -85,5 +128,9 @@ export default function App() {
         </Card>
       ))}
     </div>
+     <div className="flex flex-wrap gap-4 items-center place-content-center">
+       <Pagination  total={10} initialPage={1} variant={'light'} />
+    </div>
+    </>
   );
 }
