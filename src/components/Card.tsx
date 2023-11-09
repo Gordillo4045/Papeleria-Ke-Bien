@@ -128,7 +128,7 @@ import {Pagination} from "@nextui-org/react";
         </Card>
       ))}
     </div>
-     <div className="flex flex-wrap gap-4 items-center place-content-center">
+     <div className="flex flex-wrap      items-center place-content-center">
        <Pagination  total={10} initialPage={1} variant={'light'} />
     </div>
     </>

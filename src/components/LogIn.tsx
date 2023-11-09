@@ -11,8 +11,8 @@ export default function App() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-       // @ts-ignore
-    const onLogin = (e) => {
+       
+    const onLogin = (e:React.MouseEvent) => {
         e.preventDefault()
         signInWithEmailAndPassword(auth, email, password)
         .then(() => {
@@ -43,6 +43,7 @@ export default function App() {
               <ModalHeader className="flex flex-col gap-1">Inicio de sesion</ModalHeader>
               <ModalBody>
                 <Input
+                  isRequired
                   autoFocus
                   endContent={
                     <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
@@ -54,6 +55,7 @@ export default function App() {
                   value={email}
                 />
                 <Input
+                  isRequired
                   endContent={
                     <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                   }
