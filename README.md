@@ -5,7 +5,11 @@
    ```
       >Git clone https://github.com/Gordillo4045/Papeleria-Ke-Bien.git
    ```
-- `Paso 3`: En la terminal 
+- `Paso 3`: Entrar a la carpeta  
+```
+ cd /Nombre_carpeta
+```
+- `Paso 4`: En la terminal 
    ```
       npm install
       npm run dev
