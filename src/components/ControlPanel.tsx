@@ -12,14 +12,14 @@ interface FormState {
   password: string;
 }
 
-export default function App() {
-  const [formProducts, setFormProducts] = useState({
-    nombre: '',
-    marca: '',
-    modelo: '',
-    precio: '',
-    imagen: null,
- })
+ export default function App() {
+//   const [formProducts, setFormProducts] = useState({
+//     nombre: '',
+//     marca: '',
+//     modelo: '',
+//     precio: '',
+//     imagen: null,
+//  })
 
 //  const handleChange = (e) => {
 //   if (e.target.name === 'imagen') {
@@ -34,12 +34,15 @@ export default function App() {
   const [modelo, setModelo] = useState('')
   const [price, setPrice] = useState('')
   const [image, setImage] = useState(null)
-
+  image;
+  
   const [imageError, setImageError] = useState('')
 
   const [successMsg, setSucessMsg] = useState('')
   const [uploadError, setUploadError] = useState('')
   const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG']
+  setSucessMsg;
+  setUploadError;
   // @ts-ignore
   const handleProductImg = (e) => {
     e.preventDefault();
