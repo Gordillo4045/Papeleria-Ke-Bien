@@ -1,7 +1,7 @@
 # Papeleria ke bien
 ## :hammer: Inicializacion de proyecto
 - `Paso 1`: Descargar node.js https://nodejs.org/en
-- `Paso 2`: Clonar repositorio en visual 
+- `Paso 2`: Clonar repositorio en visual code
    ```
       >Git clone https://github.com/Gordillo4045/Papeleria-Ke-Bien.git
    ```
