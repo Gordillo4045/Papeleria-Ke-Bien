@@ -8,6 +8,10 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
+    path: "/Papeleria-Ke-Bien",
+    element: <Home />,
+  },
+  {
     path: "/controlpanel",
     element: <ControlPanel/>
   },
