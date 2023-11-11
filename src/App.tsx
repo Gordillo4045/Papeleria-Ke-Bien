@@ -12,6 +12,10 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
+    path: "/Papeleria-Ke-Bien/controlpanel",
+    element: <ControlPanel />,
+  },
+  {
     path: "/controlpanel",
     element: <ControlPanel/>
   },
