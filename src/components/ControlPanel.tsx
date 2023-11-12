@@ -4,67 +4,70 @@ import { MailIcon } from '../assets/MailIcon.jsx'
 // @ts-ignore
 import { LockIcon } from '../assets/LockIcon.jsx'
 import { useEffect, useState } from "react";
-import { auth } from "../Config/Config.tsx"
+import { auth} from "../Config/Config.tsx"
 import { signOut, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-//import {db, storage} from "../Config/Config"
+//import { collection  } from "firebase/firestore"; 
+//import {getDownloadURL, ref, uploadBytes } from "firebase/storage"
+
 interface FormState {
   email: string;
   password: string;
 }
 
+
+
  export default function App() {
-//   const [formProducts, setFormProducts] = useState({
-//     nombre: '',
-//     marca: '',
-//     modelo: '',
-//     precio: '',
-//     imagen: null,
-//  })
+  
+  // const handleSubmitProducts = async (e) => {
+  //   e.preventDefault();
 
-//  const handleChange = (e) => {
-//   if (e.target.name === 'imagen') {
-//     setForm({ ...form, imagen: e.target.files[0] });
-//   } else {
-//     setForm({ ...form, [e.target.name]: e.target.value });
-//   }
-// }
+  //   try {
+  //     // Sube la imagen a Firebase Storage y obtén la URL de descarga
+  //     let imageUrl = '';
+  //     if (formData.imagen) {
+  //       const storageRef = ref(storage,`images/${formData.imagen.name}`);
+  //       await uploadBytes(storageRef,formData.imagen);
+  //       imageUrl = await getDownloadURL(storageRef);
+  //     }
 
-  const [title, setTitle] = useState('')
-  const [marca, setMarca] = useState('')
-  const [modelo, setModelo] = useState('')
-  const [price, setPrice] = useState('')
-  const [image, setImage] = useState(null)
-  image;
+  //     // Inserta los datos (incluida la URL de la imagen) en la base de datos de Firebase
+  //      await addDoc(collection(db,'productos'),{
+  //       ...formData,
+  //       imagen: imageUrl,
+  //     })
+
+  //     // Limpia el formulario después de la inserción exitosa
+  //     setFormData({
+  //       nombre: '',
+  //       marca: '',
+  //       modelo: '',
+  //       precio: '',
+  //       imagen: null,
+  //     });
+
+  //     console.log('Datos insertados correctamente');
+  //   } catch (error) {
+  //     console.error('Error al insertar datos:', error);
+  //   }
+  // }
   
   const [imageError, setImageError] = useState('')
-
-  const [successMsg, setSucessMsg] = useState('')
-  const [uploadError, setUploadError] = useState('')
   const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG']
-  setSucessMsg;
-  setUploadError;
+
+  
   // @ts-ignore
   const handleProductImg = (e) => {
     e.preventDefault();
     let selectedFile = e.target.files[0]
     if (selectedFile) {
       if (selectedFile && types.includes(selectedFile.type)) {
-        setImage(selectedFile)
         setImageError('')
       } else {
-        setImage(null)
         setImageError('Selecciona un tipo valido jpg o png')
       }
     } else {
       console.log('porfavor selecciona el archivo')
     }
-  }
-  // @ts-ignore
-  const handleAddProducts = (e) => {
-    e.preventDefault();
-    // console.log(title,marca,modelo,price)
-    // console.log(image)
-    //const uploadTask=storage.ref(`product-images/${image.name}`).put(image)
   }
 
   const [formState, setFormState] = useState<FormState>({
@@ -84,8 +87,6 @@ interface FormState {
     return emailRegex.test(email);
   };
 
-  // const [email, setEmail] = useState('')
-  // const [password, setPassword] = useState('')
   const [isOpen, setIsOpen] = useState(false);
 
   const onOpen = () => {
@@ -211,18 +212,15 @@ interface FormState {
         <Button color="danger" type="submit" onClick={handleSignOut} className="mt-5">
           Cerrar sesion
         </Button>
-        {successMsg && <>
-          <div className="sucess-msg">{successMsg}</div>
-        </>}
-        <form action="" onSubmit={handleAddProducts} className="flex flex-col bg-gray-50 h-screen w-full items-center space-y-14 p-6">
+        
+        <form action=""  className="flex flex-col bg-gray-50 h-screen w-full items-center space-y-14 p-6">
           <Input
             isRequired
             type="text"
             label="Nombre"
             labelPlacement="outside"
             placeholder="Cuaderno"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
+       
           />
           <Input
             isRequired
@@ -230,8 +228,6 @@ interface FormState {
             label="Marca"
             labelPlacement="outside"
             placeholder="Bazic"
-            onChange={(e) => setMarca(e.target.value)}
-            value={marca}
           />
           <Input
             isRequired
@@ -239,12 +235,10 @@ interface FormState {
             label="Modelo"
             labelPlacement="outside"
             placeholder="Cuadro"
-            onChange={(e) => setModelo(e.target.value)}
-            value={modelo}
           />
           <Input
             isRequired
-            type="number"
+            type="text"
             label="Precio"
             placeholder="0.00"
             labelPlacement="outside"
@@ -253,8 +247,7 @@ interface FormState {
                 <span className="text-default-400 text-small">$</span>
               </div>
             }
-            onChange={(e) => setPrice(e.target.value)}
-            value={price}
+          
           />
           <Input
             isRequired
@@ -262,7 +255,6 @@ interface FormState {
             label="Imagen"
             placeholder="Selecciona el archivo"
             labelPlacement="outside"
-            onChange={handleProductImg}
           />
           {imageError && <>
             <div className="error-msg">{imageError}</div>
@@ -272,11 +264,7 @@ interface FormState {
             Aceptar
           </Button>
         </form>
-        {uploadError && <>
-          <br />
-          <div className="error-msg">{uploadError}</div>
-
-        </>}
+        
       </div>
     </div>
   )
