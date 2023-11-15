@@ -106,35 +106,37 @@ const Home: React.FC = () => {
 
     return (
         <div className="container mx-auto mt-8">
-            <div className="lg:w-1/4 lg:mr-8 mb-4 lg:mb-0">
-                <Filters
-                    precioRange={precioRange}
-                    onPrecioRangeChange={setPrecioRange}
-                    selectedMarcas={selectedMarcas}
-                    onMarcasChange={setSelectedMarcas}
-                    selectedModelos={selectedModelos}
-                    onModelosChange={setSelectedModelos}
-                />
-            </div>
-            <div className="lg:w-3/4">
-                <div className="place-items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {currentItems.map((item) => (
-                        <ProductCard
-                            key={item.id}
-                            id={item.id}
-                            nombre={item.nombre}
-                            precio={item.precio}
-                            imagen={item.imagen}
-                        />
-                    ))}
-                </div>
-                <div className="flex justify-center mt-4">
-                    <Pagination
-                        total={Math.ceil(filteredProducts.length / itemsPerPage)}
-                        initialPage={currentPage}
-                        variant={"light"}
-                        onChange={paginate}
+            <div className="flex flex-col lg:flex-row">
+                <div className="lg:w-1/4 lg:p-4 mb-4 lg:mb-0 shadow-md lg:h-screen">
+                    <Filters
+                        precioRange={precioRange}
+                        onPrecioRangeChange={setPrecioRange}
+                        selectedMarcas={selectedMarcas}
+                        onMarcasChange={setSelectedMarcas}
+                        selectedModelos={selectedModelos}
+                        onModelosChange={setSelectedModelos}
                     />
+                </div>
+                <div className="lg:w-3/4 shadow-inner">
+                    <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                        {currentItems.map((item) => (
+                            <ProductCard
+                                key={item.id}
+                                id={item.id}
+                                nombre={item.nombre}
+                                precio={item.precio}
+                                imagen={item.imagen}
+                            />
+                        ))}
+                    </div>
+                    <div className="flex justify-center mt-4">
+                        <Pagination
+                            total={Math.ceil(filteredProducts.length / itemsPerPage)}
+                            initialPage={currentPage}
+                            variant={"light"}
+                            onChange={paginate}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
