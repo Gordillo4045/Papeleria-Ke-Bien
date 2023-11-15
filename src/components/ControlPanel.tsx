@@ -150,8 +150,10 @@ interface FormData {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         onClose()
+        setIsLoggedIn(true);
       } else {
         onOpen()
+        setIsLoggedIn(false);
       }
     });
     // Limpia la suscripción cuando el componente se desmonta
