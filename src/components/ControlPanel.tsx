@@ -1,7 +1,7 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from "@nextui-org/react"
-// @ts-ignore
+//@ts-ignore
 import { MailIcon } from '../assets/MailIcon.jsx'
-// @ts-ignore
+//@ts-ignore
 import { LockIcon } from '../assets/LockIcon.jsx'
 import { useEffect, useState } from "react";
 import { auth, storage, db} from "../Config/Config.tsx"
@@ -23,101 +23,6 @@ interface FormData {
 }
 
  export default function App() {
-  
-  // const handleSubmitProducts = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     // Sube la imagen a Firebase Storage y obtén la URL de descarga
-  //     let imageUrl = '';
-  //     if (formData.imagen) {
-  //       const storageRef = ref(storage,`images/${formData.imagen.name}`);
-  //       await uploadBytes(storageRef,formData.imagen);
-  //       imageUrl = await getDownloadURL(storageRef);
-  //     }
-
-  //     // Inserta los datos (incluida la URL de la imagen) en la base de datos de Firebase
-  //      await addDoc(collection(db,'productos'),{
-  //       ...formData,
-  //       imagen: imageUrl,
-  //     })
-
-  //     // Limpia el formulario después de la inserción exitosa
-  //     setFormData({
-  //       nombre: '',
-  //       marca: '',
-  //       modelo: '',
-  //       precio: '',
-  //       imagen: null,
-  //     });
-
-  //     console.log('Datos insertados correctamente');
-  //   } catch (error) {
-  //     console.error('Error al insertar datos:', error);
-  //   }
-  // }
-  
-  // const [imageError, setImageError] = useState('')
-  // const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG']
-  // const [productName, setProductName] = useState<string>('');
-  // const [productMarca, setProductMarca] = useState<string>('');
-  // const [productModelo, setProductModelo] = useState<string>('');
-  // const [productPrice, setProductPrice] = useState<number>(0);
-  // const [productImg, setProductImg] = useState<File | null>(null);
-  
-  
-  // const handleProductImg = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   e.preventDefault();
-  //   let selectedFile = e.target.files && e.target.files[0]
-  //   if (selectedFile) {
-  //     if (selectedFile && types.includes(selectedFile.type)) {
-  //       setProductImg(selectedFile);
-  //       setImageError('')
-  //     } else {
-  //       setImageError('Selecciona un tipo valido jpg o png')
-  //     }
-  //   } else {
-  //     console.log('porfavor selecciona el archivo')
-  //   }
-  // }
-
-  // const handleUpload = async () => {
-  //   if (productImg) {
-  //     const storageRef = ref(storage, `images/${productImg.name}`);
-  //     try {
-  //       // Subir la imagen a Firebase Storage
-  //       await uploadBytes(storageRef, productImg);
-
-  //       // Obtener la URL de descarga
-  //       const imageUrl = await getDownloadURL(storageRef);
-
-  //       // Guardar los datos en Firebase Database
-  //       const productsRef = dbRef(database, 'productos');
-  //       const newProductRef = push(productsRef);
-
-  //       // Setear los datos del producto
-  //       set(newProductRef, {
-  //         productName,
-  //         productMarca,
-  //         productModelo,
-  //         productPrice,
-  //         imageUrl,
-  //       });
-
-  //       // Limpiar el estado después de subir
-  //       setProductName('');
-  //       setProductMarca('');
-  //       setProductModelo('');
-  //       setProductPrice(0);
-  //       setProductImg(null);
-  //     } catch (error) {
-  //       console.error('Error al subir la imagen:', error);
-  //     }
-  //   } else {
-  //     console.error('No hay ninguna imagen para subir.');
-  //   }
-  // };
-
   const [formState, setFormState] = useState<FormState>({
     email: '',
     password: '',

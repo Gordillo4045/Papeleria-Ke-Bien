@@ -1,3 +1,4 @@
+
 export const LockIcon = (props) => (
   <svg
     aria-hidden="true"

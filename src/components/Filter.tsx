@@ -7,6 +7,7 @@ interface FiltersProps {
   onMarcasChange: (values: string[]) => void;
   selectedModelos: string[];
   onModelosChange: (values: string[]) => void;
+  onSearchChange: (searchTerm: string) => void;
 }
 
 const Filters: React.FC<FiltersProps> = ({
@@ -20,7 +21,6 @@ const Filters: React.FC<FiltersProps> = ({
       <Slider
         label="Rango de precio"
         step={1}
-        minValue={0}
         maxValue={500}
         defaultValue={precioRange}
         formatOptions={{ style: "currency", currency: "MXN" }}
@@ -38,8 +38,8 @@ const Filters: React.FC<FiltersProps> = ({
       </CheckboxGroup>
       <br />
       <CheckboxGroup label="Selecciona el modelo" onChange={(values) => onModelosChange(values as string[])}>
-        <Checkbox value="modelo1">Modelo 1</Checkbox>
-        <Checkbox value="modelo2">Modelo 2</Checkbox>
+        <Checkbox value="Cuadro">Cuadro</Checkbox>
+        <Checkbox value="Raya">Raya</Checkbox>
         <Checkbox value="modelo3">Modelo 3</Checkbox>
         {/* Agrega más Checkbox según tus modelos */}
       </CheckboxGroup>
