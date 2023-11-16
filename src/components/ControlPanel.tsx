@@ -230,13 +230,13 @@ interface FormData {
           </ModalContent>
         </Modal>
       </>
-      <div className="lg:w-9/12 flex flex-col items-center justify-center m-auto bg-gray-50">
+      <div className="lg:w-9/12 flex flex-col items-center justify-center m-auto bg-gray-50 min-h-screen ">
         <h1 className="text-4xl font-bold">Añadir productos</h1>
         <Button color="danger" type="submit" onClick={handleSignOut} className="mt-5">
           Cerrar sesion
         </Button>
         
-        <form action="" onSubmit={handleSubmitForm} className=" bg-gray-50 h-screen w-full items-center space-y-11 p-6">
+        <form action="" onSubmit={handleSubmitForm} className=" bg-gray-50 w-full items-center space-y-11 p-6">
           <Input
             isRequired
             type="text"
@@ -305,7 +305,7 @@ interface FormData {
             <div className="bg-red-100 font-bold text-sm w-full h-10 flex items-center content-center rounded-md">{imageError}</div>
             
           </>} */}
-          <Button color="success" type="submit"  >
+          <Button color="success" type="submit" >
             Aceptar
           </Button>
         </form>
