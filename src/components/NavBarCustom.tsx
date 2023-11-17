@@ -1,4 +1,4 @@
-import { Navbar, NavbarContent, Input } from "@nextui-org/react";
+import { Navbar, NavbarContent, Input, NavbarBrand } from "@nextui-org/react";
 //@ts-ignore
 import { SearchIcon } from "../assets/SearchIcon";
 
@@ -13,7 +13,10 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange }) => {
   };
 
   return (
-    <Navbar>
+    <Navbar shouldHideOnScroll isBordered className="bg-pink-300">
+      <NavbarBrand>
+        <p className="font-bold text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
+      </NavbarBrand>
       <NavbarContent as="div" className="items-center w-full" justify="center">
         <Input
           classNames={

@@ -17,14 +17,14 @@ const Filters: React.FC<FiltersProps> = ({
     onModelosChange,
   }) => {
   return (
-    <div>
+    <div className="flex flex-wrap justify-center gap-5 lg:gap-0 lg:flex-col max-w-md">
       <Slider
         label="Rango de precio"
         step={1}
         maxValue={500}
         defaultValue={precioRange}
         formatOptions={{ style: "currency", currency: "MXN" }}
-        className="max-w-xs"
+        className="max-w-lg"
         radius="md"
         showTooltip={true}
         onChange={(value) => onPrecioRangeChange(value as [number, number])}

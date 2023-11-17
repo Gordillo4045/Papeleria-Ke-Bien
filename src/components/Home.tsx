@@ -7,6 +7,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 //@ts-ignore
 import {SearchIcon} from "../assets/SearchIcon"
 import CustomNavbar from "./NavBarCustom";
+import Footer from "./Footer";
 
 interface Product {
     id: string;
@@ -74,10 +75,10 @@ const Home: React.FC = () => {
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
-        <div className="container h-screen mx-auto">
+        <div className="container min-h-screen md:mx-auto">
             <CustomNavbar onSearchChange={setSearchTerm}/>
             <div className="flex flex-col lg:flex-row">
-                <div className="lg:w-1/4 lg:p-4 mb-4 lg:mb-0 shadow-md md:rounded-l-xl">
+                <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex justify-center bg-blue-300">
                     <Filters
                         precioRange={precioRange}
                         onPrecioRangeChange={setPrecioRange}
@@ -88,7 +89,7 @@ const Home: React.FC = () => {
                         onSearchChange={setSearchTerm}
                     />
                 </div>
-                <div className="lg:w-3/4 shadow-inner md:rounded-r-xl">
+                <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl bg-red-300">
                     <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         {currentItems.map((item) => (
                             <ProductCard
@@ -112,6 +113,9 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <div className="rounded-b-lg shadow-md  ">
+                    <Footer/>
+                </div>
         </div>
     );
 };

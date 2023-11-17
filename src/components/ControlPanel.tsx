@@ -148,7 +148,7 @@ interface FormData {
         const nuevoProducto = {
           nombre: formData.nombre,
           marca: formData.marca,
-          modelo: formData.modelo,
+          modelo: formData.modelo,  
           precio: parseFloat(formData.precio),
           imagen: imageUrl,
         };
