@@ -13,9 +13,9 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange }) => {
   };
 
   return (
-    <Navbar shouldHideOnScroll isBordered className="bg-pink-300">
+    <Navbar shouldHideOnScroll isBordered >
       <NavbarBrand>
-        <p className="font-bold text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
+        <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
       </NavbarBrand>
       <NavbarContent as="div" className="items-center w-full" justify="center">
         <Input

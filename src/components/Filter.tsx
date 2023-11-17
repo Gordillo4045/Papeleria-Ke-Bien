@@ -24,7 +24,7 @@ const Filters: React.FC<FiltersProps> = ({
         maxValue={500}
         defaultValue={precioRange}
         formatOptions={{ style: "currency", currency: "MXN" }}
-        className="max-w-lg"
+        className="max-w-lg px-4"
         radius="md"
         showTooltip={true}
         onChange={(value) => onPrecioRangeChange(value as [number, number])}

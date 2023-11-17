@@ -78,7 +78,7 @@ const Home: React.FC = () => {
         <div className="container min-h-screen md:mx-auto">
             <CustomNavbar onSearchChange={setSearchTerm}/>
             <div className="flex flex-col lg:flex-row">
-                <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex justify-center bg-blue-300">
+                <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex justify-center">
                     <Filters
                         precioRange={precioRange}
                         onPrecioRangeChange={setPrecioRange}
@@ -89,7 +89,7 @@ const Home: React.FC = () => {
                         onSearchChange={setSearchTerm}
                     />
                 </div>
-                <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl bg-red-300">
+                <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
                     <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         {currentItems.map((item) => (
                             <ProductCard
@@ -113,7 +113,7 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className="rounded-b-lg shadow-md  ">
+            <div className="rounded-b-lg shadow-xl  ">
                     <Footer/>
                 </div>
         </div>
