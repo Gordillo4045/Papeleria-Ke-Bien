@@ -27,6 +27,7 @@ const Filters: React.FC<FiltersProps> = ({
         className="max-w-lg px-4"
         radius="md"
         showTooltip={true}
+        hideThumb={true}
         onChange={(value) => onPrecioRangeChange(value as [number, number])}
       />
       <br />
@@ -34,14 +35,12 @@ const Filters: React.FC<FiltersProps> = ({
         <Checkbox value="Norma">Norma</Checkbox>
         <Checkbox value="Bazic">Bazic</Checkbox>
         <Checkbox value="marca3">Marca 3</Checkbox>
-        {/* Agrega más Checkbox según tus marcas */}
       </CheckboxGroup>
       <br />
       <CheckboxGroup label="Selecciona el modelo" onChange={(values) => onModelosChange(values as string[])}>
         <Checkbox value="Cuadro">Cuadro</Checkbox>
         <Checkbox value="Raya">Raya</Checkbox>
         <Checkbox value="modelo3">Modelo 3</Checkbox>
-        {/* Agrega más Checkbox según tus modelos */}
       </CheckboxGroup>
     </div>
   );

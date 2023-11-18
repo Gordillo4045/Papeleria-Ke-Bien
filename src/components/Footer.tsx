@@ -10,10 +10,10 @@ export default function Footer() {
                 <p className="text-sm">Zona norte, Avenida F, Zona Norte, 22000 Tijuana, B.C.</p>
             </div>
             <div className="rounded-b-xl col-span-2 md:pt-4">
-                <div className="flex items-center place-content-center self-center gap-3 ">
-                    <FaFacebookSquare size={"2.5rem"} color={"blue"} />
-                    <FaWhatsappSquare size={"2.5rem"} color={"green"} />
-                    <BiLogoGmail size={"2.5rem"} color={"red"} />
+                <div className="flex items-center place-content-center md:place-content-start self-center gap-3 ">
+                    <FaFacebookSquare size={"2rem"} color={"blue"} />
+                    <FaWhatsappSquare size={"2rem"} color={"green"} />
+                    <BiLogoGmail size={"2rem"} color={"red"} />
 
                 </div>
                 <div className="flex gap-1 place-content-end p-2 row-span-2 col-span-2">
