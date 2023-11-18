@@ -27,7 +27,6 @@ const Filters: React.FC<FiltersProps> = ({
         className="max-w-lg px-4"
         radius="md"
         showTooltip={true}
-        hideThumb={true}
         onChange={(value) => onPrecioRangeChange(value as [number, number])}
       />
       <br />
