@@ -21,14 +21,30 @@ interface Product {
 const Home: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(6);
-
+    const [itemsPerPage, setItemsPerPage] = useState(6);
     const [precioRange, setPrecioRange] = useState<[number, number]>([0, 500]);
     const [selectedMarcas, setSelectedMarcas] = useState<string[]>([]);
     const [selectedModelos, setSelectedModelos] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
 
+    const handleResize = () => {
+        const screenWidth = window.innerWidth;
+    
+        if (screenWidth < 768) {
+          setItemsPerPage(6); // Móviles
+        } else if (screenWidth < 1024) {
+          setItemsPerPage(9); // MD
+        } else if(screenWidth < 1100){
+          setItemsPerPage(8); 
+        }else{
+            setItemsPerPage(10); // LG y tamaños mayores
+        }
+      };
+
     useEffect(() => {
+        handleResize()
+        window.addEventListener('resize', handleResize);
+
         const fetchProducts = async () => {
             const db = getFirestore();
             const productosCollection = collection(db, "productos");
@@ -53,6 +69,9 @@ const Home: React.FC = () => {
         };
 
         fetchProducts();
+        return () => {
+            window.removeEventListener('resize', handleResize);
+          };
     }, []);
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -73,7 +92,8 @@ const Home: React.FC = () => {
     const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
+    const totalItems = filteredProducts.length;
+    const totalPages = totalItems > 0 ? Math.ceil(totalItems / itemsPerPage) : 1;
     return (
         <div className="container min-h-screen md:mx-auto">
             <CustomNavbar onSearchChange={setSearchTerm}/>
@@ -103,9 +123,9 @@ const Home: React.FC = () => {
                             />
                         ))}
                     </div>
-                    <div className="flex justify-center mt-4">
+                    <div className="flex justify-center">
                         <Pagination
-                            total={Math.ceil(filteredProducts.length / itemsPerPage)}
+                            total={totalPages}
                             initialPage={currentPage}
                             variant={"light"}
                             onChange={paginate}
@@ -113,7 +133,7 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className="rounded-b-lg shadow-xl  ">
+            <div className="rounded-b-lg shadow-xl">
                     <Footer/>
                 </div>
         </div>

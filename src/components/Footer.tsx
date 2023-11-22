@@ -2,7 +2,7 @@ import { FaFacebookSquare, FaWhatsappSquare, FaReact } from "react-icons/fa";
 import { BiLogoGmail, BiLogoTypescript, BiLogoFirebase } from "react-icons/bi";
 import { SiVite, SiTailwindcss } from "react-icons/si";
 
-export default function Footer() {
+export default function  Footer() {
     return (
         <div className="grid grid-rows-2 md:grid-rows-none md:grid-flow-col rounded-b-xl">
             <div className="p-4 row-span-3">
