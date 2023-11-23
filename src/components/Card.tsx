@@ -11,7 +11,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, marca, modelo }) => {
   return (
-    <Card className="w-10/12 mb-4 min-h-[240px]" shadow="sm" key={id}>
+    <Card className="w-10/12 mb-4 min-h-[245px]" shadow="sm" key={id}>
       <CardBody className="overflow-visible p-0 flex flex-initial">
         <Image
           shadow="sm"
