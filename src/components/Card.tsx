@@ -18,7 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
           radius="lg"
           width="100%"
           alt={nombre}
-          className="w-full object-contain h-[140px]"
+          className="w-full object-contain hover:object-cover h-[140px]"
           src={imagen}
         />
       </CardBody>
