@@ -72,8 +72,9 @@ export default function App() {
     const rowsPerPage = 10;
 
     useEffect(() => {
+        setPage(1);
         obtenerProductos();
-    }, []); // Fetch data on component mount
+    }, [filterValue]); 
 
     const totalItems = productos.length;
     const totalPages = totalItems > 0 ? Math.ceil(totalItems / rowsPerPage) : 1;
@@ -97,7 +98,10 @@ export default function App() {
 
         if (hasSearchFilter) {
             filteredProducts = filteredProducts.filter((product) =>
-                product.nombre.toLowerCase().includes(filterValue.toLowerCase())
+            filterValue === "" ||
+                product.nombre.toLowerCase().includes(filterValue.toLowerCase()) ||
+                product.marca.toLowerCase().includes(filterValue.toLowerCase()) ||
+                product.modelo.toLowerCase().includes(filterValue.toLowerCase()) 
             );
         }
 
@@ -464,6 +468,7 @@ export default function App() {
                     total={pages}
                     variant="light"
                     onChange={setPage}
+                    initialPage={page}
                 />
                 <span className="text-small text-default-400">
                     {`${items.length} de ${filteredItems.length} productos mostrados`}

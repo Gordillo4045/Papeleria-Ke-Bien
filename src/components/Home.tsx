@@ -42,6 +42,7 @@ const Home: React.FC = () => {
       };
 
     useEffect(() => {
+        setCurrentPage(1);
         handleResize()
         window.addEventListener('resize', handleResize);
 
@@ -72,7 +73,7 @@ const Home: React.FC = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
           };
-    }, []);
+    }, [searchTerm]);
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -127,6 +128,7 @@ const Home: React.FC = () => {
                         <Pagination
                             total={totalPages}
                             initialPage={currentPage}
+                            page={currentPage}
                             variant={"light"}
                             onChange={paginate}
                         />
