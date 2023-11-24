@@ -1,17 +1,17 @@
 import Home from './components/Home'
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import ErrorPage from './components/ErrorPage'
 import ProductsTable from './components/Table'
 function App() {
 
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route path='/' Component={Home}/>
-        <Route path='/controlpanel' Component={ProductsTable}/>
-        <Route path='*' Component={ErrorPage}/>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/controlpanel' element={<ProductsTable/>}/>
+        <Route path='*' element={<ErrorPage/>}/>
       </Routes>
-    </BrowserRouter>
+    </Router>
   )
 }
 
