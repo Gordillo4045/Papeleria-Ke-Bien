@@ -7,8 +7,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/papeleria-ke-bien' Component={Home}/>
-        <Route path='/papeleria-ke-bien/controlpanel' Component={ProductsTable}/>
+        <Route path='/' Component={Home}/>
+        <Route path='/controlpanel' Component={ProductsTable}/>
         <Route path='*' Component={ErrorPage}/>
       </Routes>
     </BrowserRouter>
