@@ -408,6 +408,7 @@ export default function App() {
             <div className="flex flex-col gap-4">
                 <div className="flex justify-between gap-3 items-end">
                     <Input
+                    className="min-w-[100px]"
                         isClearable
                         classNames={{
                             base: "w-full sm:max-w-[44%]",
@@ -432,7 +433,7 @@ export default function App() {
                         </Button>
                         <Button
                             color="primary"
-                            className=" text-background text-sm font-light"
+                            className=" text-background text-sm"
                             endContent={<FaPlus size={"1rem"} />}
                             size="sm"
                             onClick={() => setIsModalOpen(true)}
@@ -445,7 +446,7 @@ export default function App() {
                             size="sm"
                             onClick={handleSignOut}
                             endContent={<IoExitOutline size={"1.2rem"} />}
-                            className="text-background text-sm font-light truncate max-w-xs">
+                            className="text-background text-sm max-w-xs">
                             Salir
                         </Button>
 
@@ -489,12 +490,12 @@ export default function App() {
                 <NavbarContent justify="end">
                     <NavbarItem>
                         <Button as={Link} color="secondary" href="/" variant="light" startContent={<IoHome />} onClick={handleSignOut}>
-                            Home
+                            <p className="font-semibold">Home</p>
                         </Button>
                     </NavbarItem>
                 </NavbarContent>
             </Navbar>
-            <div className="flex flex-row p-4 max-w-4xl mx-auto shadow-inner rounded-xl">
+            <div className="flex flex-row p-4 max-w-4xl md:mx-auto shadow-inner rounded-xl mx-4">
 
                 <Modal
                     isOpen={isOpen}
@@ -705,6 +706,7 @@ export default function App() {
                         wrapper: "max-h-[382px] md:max-h-[482px]",
                       }}
                     isHeaderSticky
+                    isCompact
                     removeWrapper
                     aria-label="Tabla de productos con imagen, nombre, marca, modelo y precio"
                     bottomContent={bottomContent}
