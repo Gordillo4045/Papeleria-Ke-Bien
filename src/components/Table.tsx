@@ -413,7 +413,7 @@ export default function App() {
                             base: "w-full sm:max-w-[44%]",
                             inputWrapper: "border-1",
                         }}
-                        placeholder="Buscar por nombre..."
+                        placeholder="Buscar"
                         size="sm"
                         startContent={<IoIosSearch className="text-default-300" />}
                         value={filterValue}
@@ -437,7 +437,7 @@ export default function App() {
                             size="sm"
                             onClick={() => setIsModalOpen(true)}
                         >
-                            Agregar Nuevo
+                            Nuevo
                         </Button>
                         <Button
                             color="danger"
@@ -445,8 +445,8 @@ export default function App() {
                             size="sm"
                             onClick={handleSignOut}
                             endContent={<IoExitOutline size={"1.2rem"} />}
-                            className="text-background text-sm font-light">
-                            Cerrar sesion
+                            className="text-background text-sm font-light truncate max-w-xs">
+                            Salir
                         </Button>
 
                     </div>
@@ -457,9 +457,8 @@ export default function App() {
 
     const bottomContent = React.useMemo(() => {
         return (
-            <div className="py-2 px-2 flex justify-end items-center">
+            <div className="md:py-2 md:px-2 flex justify-end items-center">
                 <Pagination
-                    showControls
                     classNames={{
                         cursor: "bg-foreground text-background",
                     }}
@@ -469,13 +468,14 @@ export default function App() {
                     variant="light"
                     onChange={setPage}
                     initialPage={page}
+                    isCompact
                 />
-                <span className="text-small text-default-400">
-                    {`${items.length} de ${filteredItems.length} productos mostrados`}
+                <span className="text-[0.7rem] md:text-small text-default-400">
+                    {`${items.length} de ${filteredItems.length} productos`}
                 </span>
             </div>
         );
-    }, [items.length, filteredItems.length, page, pages]);
+    }, [items.length, filteredItems.length, page, pages]);  
 
     return (
         <div className="container min-h-screen md:mx-auto">
@@ -700,7 +700,11 @@ export default function App() {
                 )}
 
                 <Table
-
+                className="overflow-scroll"
+                    classNames={{
+                        wrapper: "max-h-[382px] md:max-h-[482px]",
+                      }}
+                    isHeaderSticky
                     removeWrapper
                     aria-label="Tabla de productos con imagen, nombre, marca, modelo y precio"
                     bottomContent={bottomContent}

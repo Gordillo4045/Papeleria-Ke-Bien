@@ -1,7 +1,6 @@
 import { FaFacebookSquare, FaWhatsappSquare, FaReact } from "react-icons/fa";
 import { BiLogoGmail, BiLogoTypescript, BiLogoFirebase } from "react-icons/bi";
 import { SiVite, SiTailwindcss } from "react-icons/si";
-import {Link} from 'react-router-dom'
 
 export default function Footer() {
     return (
@@ -27,9 +26,7 @@ export default function Footer() {
                     <BiLogoTypescript />
                     <SiTailwindcss />
                     <BiLogoFirebase />
-                    <Link to={"/controlpanel"} >
                     <SiVite />
-                    </Link>
                 </div>
             </div>
         </div>
