@@ -1,11 +1,11 @@
 
 import { useEffect, useState } from "react";
-import { Pagination} from "@nextui-org/react";
+import { Pagination } from "@nextui-org/react";
 import Filters from "./Filter";
 import ProductCard from "./Card";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 //@ts-ignore
-import {SearchIcon} from "../assets/SearchIcon"
+import { SearchIcon } from "../assets/SearchIcon"
 import CustomNavbar from "./NavBarCustom";
 import Footer from "./Footer";
 
@@ -24,22 +24,22 @@ const Home: React.FC = () => {
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [precioRange, setPrecioRange] = useState<[number, number]>([0, 500]);
     const [selectedMarcas, setSelectedMarcas] = useState<string[]>([]);
-    const [selectedModelos, setSelectedModelos] = useState<string[]>([]);
+    const [selectedProductos, setSelectedProductos] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
 
     const handleResize = () => {
         const screenWidth = window.innerWidth;
-    
+
         if (screenWidth < 768) {
-          setItemsPerPage(6); // Móviles
+            setItemsPerPage(6); // Móviles
         } else if (screenWidth < 1024) {
-          setItemsPerPage(9); // MD
-        } else if(screenWidth < 1100){
-          setItemsPerPage(8); 
-        }else{
+            setItemsPerPage(9); // MD
+        } else if (screenWidth < 1100) {
+            setItemsPerPage(8);
+        } else {
             setItemsPerPage(10); // LG y tamaños mayores
         }
-      };
+    };
 
     useEffect(() => {
         setCurrentPage(1);
@@ -72,32 +72,38 @@ const Home: React.FC = () => {
         fetchProducts();
         return () => {
             window.removeEventListener('resize', handleResize);
-          };
+        };
     }, [searchTerm]);
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
     const filteredProducts = products
-        .filter((product) => product.precio >= precioRange[0] && product.precio <= precioRange[1])
-        .filter((product) => selectedMarcas.length === 0 || selectedMarcas.includes(product.marca))
-        .filter((product) => selectedModelos.length === 0 || selectedModelos.includes(product.modelo))
-        .filter(
-            (product) =>
-              searchTerm === "" ||
-              product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              product.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              product.modelo.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-          
+    .filter((product) => product.precio >= precioRange[0] && product.precio <= precioRange[1])
+    .filter((product) => selectedMarcas.length === 0 || selectedMarcas.includes(product.marca))
+    .filter((product) => selectedProductos.length === 0 || selectedProductos.includes(product.nombre))
+    .filter(
+      (product) =>
+        searchTerm === "" ||
+        product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.marca.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
     const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
     const totalItems = filteredProducts.length;
     const totalPages = totalItems > 0 ? Math.ceil(totalItems / itemsPerPage) : 1;
+        
+    const handleResetFilters = () => {
+    setSelectedMarcas([]); // Reinicia las marcas seleccionadas
+    setSelectedProductos([]); // Reinicia los productos seleccionados
+    setPrecioRange([0, 500]); // Reinicia el rango de precios
+    setSearchTerm(""); // Reinicia el término de búsqueda
+  };
     return (
         <div className="container min-h-screen md:mx-auto">
-            <CustomNavbar onSearchChange={setSearchTerm}/>
+            <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm}/>
             <div className="flex flex-col lg:flex-row">
                 <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex justify-center">
                     <Filters
@@ -105,39 +111,49 @@ const Home: React.FC = () => {
                         onPrecioRangeChange={setPrecioRange}
                         selectedMarcas={selectedMarcas}
                         onMarcasChange={setSelectedMarcas}
-                        selectedModelos={selectedModelos}
-                        onModelosChange={setSelectedModelos}
+                        selectedProductos={selectedProductos}
+                        onProductosChange={setSelectedProductos}
                         onSearchChange={setSearchTerm}
+                        onResetFilters={handleResetFilters}
+                        
                     />
                 </div>
                 <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
-                    <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                        {currentItems.map((item) => (
-                            <ProductCard
-                                key={item.id}
-                                id={item.id}
-                                nombre={item.nombre}
-                                precio={item.precio}
-                                imagen={item.imagen}
-                                marca={item.marca}
-                                modelo={item.modelo}
-                            />
-                        ))}
-                    </div>
-                    <div className="flex justify-center">
-                        <Pagination
-                            total={totalPages}
-                            initialPage={currentPage}
-                            page={currentPage}
-                            variant={"light"}
-                            onChange={paginate}
-                        />
-                    </div>
+                    {currentItems.length === 0 ? ( // Condición para verificar si no hay productos
+                        <div className="text-center text-gray-500 mt-8">
+                            No se encontraron productos con los filtros seleccionados.
+                        </div>
+                    ) : (
+                        <>
+                            <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                                {currentItems.map((item) => (
+                                    <ProductCard
+                                        key={item.id}
+                                        id={item.id}
+                                        nombre={item.nombre}
+                                        precio={item.precio}
+                                        imagen={item.imagen}
+                                        marca={item.marca}
+                                        modelo={item.modelo}
+                                    />
+                                ))}
+                            </div>
+                            <div className="flex justify-center">
+                                <Pagination
+                                    total={totalPages}
+                                    initialPage={currentPage}
+                                    page={currentPage}
+                                    variant={"light"}
+                                    onChange={paginate}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
             <div className="rounded-b-lg shadow-xl">
-                    <Footer/>
-                </div>
+                <Footer />
+            </div>
         </div>
     );
 };

@@ -433,7 +433,7 @@ export default function App() {
                         </Button>
                         <Button
                             color="primary"
-                            className=" text-background text-sm"
+                            className=" text-background text-sm "
                             endContent={<FaPlus size={"1rem"} />}
                             size="sm"
                             onClick={() => setIsModalOpen(true)}
@@ -701,7 +701,7 @@ export default function App() {
                 )}
 
                 <Table
-                className="overflow-scroll"
+                className="overflow-scroll lg:overflow-hidden"
                     classNames={{
                         wrapper: "max-h-[382px] md:max-h-[482px]",
                       }}

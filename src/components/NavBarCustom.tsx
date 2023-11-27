@@ -4,16 +4,13 @@ import { SearchIcon } from "../assets/SearchIcon";
 
 interface NavbarProps {
   onSearchChange: (searchTerm: string) => void;
+  SearchTerm: string;
 }
 
-const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange }) => {
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = e.target.value;
-    onSearchChange(searchTerm);
-  };
+const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => {
 
   return (
-    <Navbar shouldHideOnScroll isBordered >
+    <Navbar shouldHideOnScroll >
       <NavbarBrand>
         <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
       </NavbarBrand>
@@ -30,7 +27,8 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange }) => {
           size="sm"
           startContent={<SearchIcon size={18} />}
           type="search"
-          onChange={handleSearchChange}
+          value={SearchTerm}
+          onValueChange={(values) => onSearchChange(values)}
         />
       </NavbarContent>
     </Navbar>
