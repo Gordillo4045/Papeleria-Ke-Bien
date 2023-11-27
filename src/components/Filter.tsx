@@ -1,4 +1,4 @@
-import { Slider, CheckboxGroup, Checkbox, ScrollShadow, Button } from "@nextui-org/react";
+import { Slider, CheckboxGroup, Checkbox, ScrollShadow, Button, Tooltip } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { db } from "../Config/Config";
 import { collection, getDocs } from "firebase/firestore";
@@ -54,9 +54,11 @@ const Filters: React.FC<FiltersProps> = ({
         <span className="font-bold text-md lg:text-xl text-inherit pl-4">
           Filtros
         </span>
+        <Tooltip showArrow={true} content="Borrar filtros" offset={2}>
         <Button onClick={onResetFilters} isIconOnly size="sm" color="default" variant="light" className="mr-3">
           <MdFilterAltOff size={"1.2rem"} />
         </Button>
+        </Tooltip>
       </div>
 
       <Slider
@@ -68,6 +70,7 @@ const Filters: React.FC<FiltersProps> = ({
         className="max-w-lg px-4"
         radius="md"
         showTooltip={true}
+        color="foreground"
         value={precioRange}
         onChange={(value) => onPrecioRangeChange(value as [number, number])}
       />

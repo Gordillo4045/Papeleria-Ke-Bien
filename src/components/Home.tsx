@@ -31,13 +31,13 @@ const Home: React.FC = () => {
         const screenWidth = window.innerWidth;
 
         if (screenWidth < 768) {
-            setItemsPerPage(6); // Móviles
+            setItemsPerPage(6); 
         } else if (screenWidth < 1024) {
-            setItemsPerPage(9); // MD
+            setItemsPerPage(9); 
         } else if (screenWidth < 1100) {
             setItemsPerPage(8);
         } else {
-            setItemsPerPage(10); // LG y tamaños mayores
+            setItemsPerPage(10);
         }
     };
 
@@ -79,31 +79,31 @@ const Home: React.FC = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
     const filteredProducts = products
-    .filter((product) => product.precio >= precioRange[0] && product.precio <= precioRange[1])
-    .filter((product) => selectedMarcas.length === 0 || selectedMarcas.includes(product.marca))
-    .filter((product) => selectedProductos.length === 0 || selectedProductos.includes(product.nombre))
-    .filter(
-      (product) =>
-        searchTerm === "" ||
-        product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.marca.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    
+        .filter((product) => product.precio >= precioRange[0] && product.precio <= precioRange[1])
+        .filter((product) => selectedMarcas.length === 0 || selectedMarcas.includes(product.marca))
+        .filter((product) => selectedProductos.length === 0 || selectedProductos.includes(product.nombre))
+        .filter(
+            (product) =>
+                searchTerm === "" ||
+                product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.marca.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
     const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
     const totalItems = filteredProducts.length;
     const totalPages = totalItems > 0 ? Math.ceil(totalItems / itemsPerPage) : 1;
-        
+
     const handleResetFilters = () => {
-    setSelectedMarcas([]); // Reinicia las marcas seleccionadas
-    setSelectedProductos([]); // Reinicia los productos seleccionados
-    setPrecioRange([0, 500]); // Reinicia el rango de precios
-    setSearchTerm(""); // Reinicia el término de búsqueda
-  };
+        setSelectedMarcas([]);
+        setSelectedProductos([]); 
+        setPrecioRange([0, 500]); 
+        setSearchTerm("");
+    };
     return (
         <div className="container min-h-screen md:mx-auto">
-            <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm}/>
+            <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm} />
             <div className="flex flex-col lg:flex-row">
                 <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex justify-center">
                     <Filters
@@ -115,11 +115,11 @@ const Home: React.FC = () => {
                         onProductosChange={setSelectedProductos}
                         onSearchChange={setSearchTerm}
                         onResetFilters={handleResetFilters}
-                        
+
                     />
                 </div>
                 <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
-                    {currentItems.length === 0 ? ( // Condición para verificar si no hay productos
+                    {currentItems.length === 0 ? ( 
                         <div className="text-center text-gray-500 mt-8">
                             No se encontraron productos con los filtros seleccionados.
                         </div>
@@ -145,6 +145,10 @@ const Home: React.FC = () => {
                                     page={currentPage}
                                     variant={"light"}
                                     onChange={paginate}
+                                    color="default"
+                                    classNames={{
+                                        cursor: "bg-foreground text-background",
+                                    }}
                                 />
                             </div>
                         </>
