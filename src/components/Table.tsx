@@ -689,7 +689,7 @@ export default function App() {
                                 </form>
                             </ModalBody>
                             <ModalFooter>
-
+                                {uploadMessage && <p></p>}
                                 <Button color="primary" onClick={() => setIsModalOpen(false)}>
                                     Cancelar
                                 </Button>
