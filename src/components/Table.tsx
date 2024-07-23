@@ -34,6 +34,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { MailIcon } from '../assets/MailIcon.jsx'
 //@ts-ignore
 import { LockIcon } from '../assets/LockIcon.jsx'
+import { toast } from 'sonner';
 
 interface FormState {
     email: string;
@@ -74,7 +75,7 @@ export default function App() {
     useEffect(() => {
         setPage(1);
         obtenerProductos();
-    }, [filterValue]); 
+    }, [filterValue]);
 
     const totalItems = productos.length;
     const totalPages = totalItems > 0 ? Math.ceil(totalItems / rowsPerPage) : 1;
@@ -98,10 +99,10 @@ export default function App() {
 
         if (hasSearchFilter) {
             filteredProducts = filteredProducts.filter((product) =>
-            filterValue === "" ||
+                filterValue === "" ||
                 product.nombre.toLowerCase().includes(filterValue.toLowerCase()) ||
                 product.marca.toLowerCase().includes(filterValue.toLowerCase()) ||
-                product.modelo.toLowerCase().includes(filterValue.toLowerCase()) 
+                product.modelo.toLowerCase().includes(filterValue.toLowerCase())
             );
         }
 
@@ -210,7 +211,7 @@ export default function App() {
 
             setProductos(productosData);
         } catch (error) {
-            console.error("Error al obtener la lista de productos", error);
+            toast.error("Error al obtener la lista de productos");
         }
     };
     const [productToDelete, setProductToDelete] = useState<Producto | null>(null);
@@ -230,9 +231,9 @@ export default function App() {
                 // Actualizar la lista de productos después de la eliminación
                 obtenerProductos();
 
-                console.log("Producto eliminado con éxito");
+                toast.success("Producto eliminado con éxito");
             } catch (error) {
-                console.error("Error al eliminar el producto", error);
+                toast.error("Error al eliminar el producto");
             }
         }
 
@@ -270,9 +271,9 @@ export default function App() {
                 setEditProducto(null);
                 obtenerProductos();
 
-                console.log("Producto editado con éxito");
+                toast.success("Producto editado con éxito");
             } catch (error) {
-                console.error("Error al editar el producto", error);
+                toast.error("Error al editar el producto");
             }
         }
     }
@@ -312,9 +313,10 @@ export default function App() {
                 password: '',
             });
             handleLoginMessage('Inicio de sesión exitoso');
+            toast.success("Inicio de sesion exitoso")
         } catch (error) {
             console.log(error);
-            handleLoginMessage('Error en el inicio de sesión. Verifica tus credenciales.');
+            toast.error("Error en el inicio de sesión. Verifica tus credenciales.")
         }
     }
 
@@ -390,12 +392,14 @@ export default function App() {
                 });
 
                 handleUploadMessage('Producto subido correctamente', false);
+                toast.success('Producto subido correctamente');
             } catch (error) {
                 console.error("Error al subir datos a Firebase", error);
                 handleUploadMessage('Error al subir el producto. Por favor, inténtalo de nuevo.', true);
+                toast.error('Error al subir el producto. Por favor, inténtalo de nuevo.');
             }
         } else {
-            console.log("Por favor, complete todos los campos.");
+            toast.warning("Por favor, complete todos los campos.");
         }
     };
 
@@ -408,7 +412,7 @@ export default function App() {
             <div className="flex flex-col gap-4">
                 <div className="flex justify-between gap-3 items-end">
                     <Input
-                    className="min-w-[100px]"
+                        className="min-w-[100px]"
                         isClearable
                         classNames={{
                             base: "w-full sm:max-w-[44%]",
@@ -476,7 +480,7 @@ export default function App() {
                 </span>
             </div>
         );
-    }, [items.length, filteredItems.length, page, pages]);  
+    }, [items.length, filteredItems.length, page, pages]);
 
     return (
         <div className="container min-h-screen md:mx-auto">
@@ -499,7 +503,7 @@ export default function App() {
 
                 <Modal
                     isOpen={isOpen}
-                    placement="top-center"
+                    placement="center"
                     hideCloseButton
                     backdrop={"blur"}
                 >
@@ -552,7 +556,7 @@ export default function App() {
 
                 <Modal
                     isOpen={showDeleteModal}
-                    placement="top-center"
+                    placement="center"
                     backdrop={"opaque"}
                     hideCloseButton
                     classNames={{
@@ -573,7 +577,7 @@ export default function App() {
                 </Modal>
 
                 {editProducto && (
-                    <Modal isOpen={Boolean(editProducto)} onClose={() => setEditProducto(null)}>
+                    <Modal isOpen={Boolean(editProducto)} onClose={() => setEditProducto(null)} placement="center">
                         <ModalContent>
                             <ModalHeader>
                                 <h2 className="text-2xl font-bold mb-4">Editar Producto</h2>
@@ -620,7 +624,7 @@ export default function App() {
                 )}
 
                 {isModalOpen && (
-                    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} placement="center">
                         <ModalContent>
                             <ModalHeader>
                                 <h2 className="text-2xl font-bold mb-4">Agregar Producto</h2>
@@ -679,16 +683,13 @@ export default function App() {
                                         label="Imagen"
                                         placeholder="Selecciona el archivo"
                                         labelPlacement="outside"
-                                        // onChange={handleProductImg}
                                         accept="image/*"
                                         onChange={handleImagenChange}
                                     />
-
                                 </form>
                             </ModalBody>
                             <ModalFooter>
-                                {uploadMessage && <p className=" font-bold text-sm w-full h-10 flex items-center content-center rounded-md text-center justify-center ${uploadMessage.isError ? 'text-red-500 bg-red-100' : 'text-green-500 bg-green-100'}">
-                                    {uploadMessage.message}</p>}
+
                                 <Button color="primary" onClick={() => setIsModalOpen(false)}>
                                     Cancelar
                                 </Button>
@@ -698,13 +699,14 @@ export default function App() {
                             </ModalFooter>
                         </ModalContent>
                     </Modal>
+
                 )}
 
                 <Table
-                className="overflow-scroll lg:overflow-hidden"
+                    className="overflow-scroll lg:overflow-hidden"
                     classNames={{
                         wrapper: "max-h-[382px] md:max-h-[482px]",
-                      }}
+                    }}
                     isHeaderSticky
                     isCompact
                     removeWrapper

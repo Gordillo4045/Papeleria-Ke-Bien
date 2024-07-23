@@ -1,10 +1,12 @@
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import {NextUIProvider} from "@nextui-org/react";
+import { NextUIProvider } from "@nextui-org/react";
+import { Toaster } from 'sonner';
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <NextUIProvider>
-      <App/>
-    </NextUIProvider>
+  <NextUIProvider>
+    <App />
+    <Toaster richColors position="top-right" />
+  </NextUIProvider>
 )

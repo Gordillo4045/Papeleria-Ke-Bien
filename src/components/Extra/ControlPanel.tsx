@@ -1,13 +1,14 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from "@nextui-org/react"
 //@ts-ignore
-import { MailIcon } from '../assets/MailIcon.jsx'
+import { MailIcon } from '../../assets/MailIcon.jsx'
 //@ts-ignore
-import { LockIcon } from '../assets/LockIcon.jsx'
+import { LockIcon } from '../../assets/LockIcon.jsx'
 import { useEffect, useState } from "react";
-import { auth, storage, db } from "../Config/Config.tsx"
+import { auth, storage, db } from "../../Config/Config.tsx"
 import { signOut, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import { toast } from 'sonner';
 
 interface FormState {
   email: string;
@@ -109,9 +110,10 @@ export default function App() {
         // Actualizar la lista de productos después de la eliminación
         obtenerProductos();
 
-        console.log("Producto eliminado con éxito");
+
+        toast("Producto eliminado con éxito");
       } catch (error) {
-        console.error("Error al eliminar el producto", error);
+        toast("Error al eliminar el producto");
       }
     }
 
