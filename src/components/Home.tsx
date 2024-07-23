@@ -31,13 +31,15 @@ const Home: React.FC = () => {
         const screenWidth = window.innerWidth;
 
         if (screenWidth < 768) {
-            setItemsPerPage(6); 
+            setItemsPerPage(6);
         } else if (screenWidth < 1024) {
-            setItemsPerPage(9); 
+            setItemsPerPage(9);
         } else if (screenWidth < 1100) {
             setItemsPerPage(8);
-        } else {
+        } else if (screenWidth < 1400) {
             setItemsPerPage(10);
+        } else {
+            setItemsPerPage(20);
         }
     };
 
@@ -97,8 +99,8 @@ const Home: React.FC = () => {
 
     const handleResetFilters = () => {
         setSelectedMarcas([]);
-        setSelectedProductos([]); 
-        setPrecioRange([0, 500]); 
+        setSelectedProductos([]);
+        setPrecioRange([0, 500]);
         setSearchTerm("");
     };
     return (
@@ -119,7 +121,7 @@ const Home: React.FC = () => {
                     />
                 </div>
                 <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
-                    {currentItems.length === 0 ? ( 
+                    {currentItems.length === 0 ? (
                         <div className="text-center text-gray-500 mt-8">
                             No se encontraron productos con los filtros seleccionados.
                         </div>
