@@ -405,6 +405,7 @@ export default function App() {
 
     const handleActualizarTabla = () => {
         obtenerProductos();
+        toast.info("Tabla actualizada con exito.")
     };
 
     const topContent = React.useMemo(() => {
