@@ -507,6 +507,8 @@ export default function App() {
                     placement="center"
                     hideCloseButton
                     backdrop={"blur"}
+                    isDismissable={false}
+                    isKeyboardDismissDisabled={true}
                 >
                     <ModalContent>
                         <>
