@@ -293,9 +293,7 @@ export default function App() {
         return () => unsubscribe();
     }, []);
 
-    const handleSubmit = async (e: React.MouseEvent) => {
-        e.preventDefault();
-
+    const handleSubmit = async () => {
         const { email, password } = formState;
 
         if (!validateEmail(email)) {
@@ -548,7 +546,7 @@ export default function App() {
                                 ) : (
                                     <p className="text-sm font-thin my-auto text-red-500 left-4">{loginMessage}</p>
                                 )}
-                                <Button color="primary" onClick={handleSubmit}>
+                                <Button color="primary" onPress={handleSubmit}>
                                     Iniciar sesion
                                 </Button>
 
