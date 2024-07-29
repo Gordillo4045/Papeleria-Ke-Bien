@@ -22,7 +22,7 @@ interface Product {
 const Home: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     const [precioRange, setPrecioRange] = useState<[number, number]>([0, 500]);
     const [selectedMarcas, setSelectedMarcas] = useState<string[]>([]);
     const [selectedProductos, setSelectedProductos] = useState<string[]>([]);

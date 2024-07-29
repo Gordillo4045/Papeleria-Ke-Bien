@@ -61,7 +61,7 @@ interface Producto {
     existencias: string;
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["image", "nombre", "marca", "modelo", "precio", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["nombre", "marca", "modelo", "precio", "existencias", "actions"];
 
 export default function App() {
     //<!--Login-->
