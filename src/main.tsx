@@ -7,6 +7,6 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <NextUIProvider>
     <App />
-    <Toaster richColors position="top-right" />
+    <Toaster richColors position="bottom-center" />
   </NextUIProvider>
 )
