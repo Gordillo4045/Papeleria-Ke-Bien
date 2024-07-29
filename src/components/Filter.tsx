@@ -50,14 +50,14 @@ const Filters: React.FC<FiltersProps> = ({
 
   return (
     <div className="flex flex-wrap justify-center md:justify-normal gap-2 md:gap-5 lg:gap-0 lg:flex-col max-w-md">
-        <div className=" w-full flex justify-between items-center">
+      <div className=" w-full flex justify-between items-center">
         <span className="font-bold text-md lg:text-xl text-inherit pl-4">
           Filtros
         </span>
         <Tooltip showArrow={true} content="Borrar filtros" offset={2}>
-        <Button onClick={onResetFilters} isIconOnly size="sm" color="default" variant="light" className="mr-3">
-          <MdFilterAltOff size={"1.2rem"} />
-        </Button>
+          <Button onClick={onResetFilters} isIconOnly size="sm" color="default" variant="light" className="mr-3">
+            <MdFilterAltOff size={"1.2rem"} />
+          </Button>
         </Tooltip>
       </div>
 
@@ -76,7 +76,7 @@ const Filters: React.FC<FiltersProps> = ({
       />
       <br />
       <div className="flex gap-2 lg:inline lg:pl-5">
-        <ScrollShadow hideScrollBar className="h-48 max-w-[140px] sm:min-w-[210px] md:mr-2">
+        <ScrollShadow hideScrollBar className="h-48 xl:h-[300px] max-w-[140px] sm:min-w-[210px] md:mr-2">
           <CheckboxGroup label="Producto" value={selectedProductos} onValueChange={(values) => onProductosChange(values as string[])}>
             {productos.map((producto) => (
               <Checkbox key={producto} value={producto}>
@@ -86,7 +86,7 @@ const Filters: React.FC<FiltersProps> = ({
           </CheckboxGroup>
         </ScrollShadow>
 
-        <ScrollShadow hideScrollBar className="h-48 min-w-[140px] sm:min-w-[200px]">
+        <ScrollShadow hideScrollBar className="h-48 xl:h-[300px] min-w-[140px] sm:min-w-[200px]">
           <CheckboxGroup label="Marca" value={selectedMarcas} onValueChange={(values) => onMarcasChange(values as string[])}>
             {marcas.map((marca) => (
               <Checkbox key={marca} value={marca}>
