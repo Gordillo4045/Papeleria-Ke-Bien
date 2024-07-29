@@ -31,13 +31,9 @@ const Home: React.FC = () => {
         const screenWidth = window.innerWidth;
 
         if (screenWidth < 768) {
-            setItemsPerPage(6);
-        } else if (screenWidth < 1024) {
-            setItemsPerPage(9);
-        } else if (screenWidth < 1100) {
-            setItemsPerPage(8);
-        } else if (screenWidth < 1400) {
             setItemsPerPage(10);
+        } else if (screenWidth < 1100) {
+            setItemsPerPage(12);
         } else {
             setItemsPerPage(20);
         }

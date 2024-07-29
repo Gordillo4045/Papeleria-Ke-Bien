@@ -45,7 +45,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {selectedProduct?.nombre} {selectedProduct?.marca} {selectedProduct?.modelo}
+                <div className="flex flex-col text-base font-normal gap-2">
+                  <div className="text-xl font-semibold">{selectedProduct?.nombre}</div>
+                  <div className="">
+                    <span>Marca: </span>
+                    {selectedProduct?.marca}</div>
+                  <div className="">
+                    <span>Modelo: </span>
+                    {selectedProduct?.modelo}</div>
+                </div>
               </ModalHeader>
               <ModalBody>
                 <Image
