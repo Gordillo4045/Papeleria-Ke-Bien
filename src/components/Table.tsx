@@ -61,100 +61,7 @@ interface Producto {
 const INITIAL_VISIBLE_COLUMNS = ["image", "nombre", "marca", "modelo", "precio", "actions"];
 
 export default function App() {
-    const [filterValue, setFilterValue] = useState("");
-    const [productos, setProductos] = useState<Producto[]>([]);
-    const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
-    visibleColumns;
-    const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-        column: "nombre",
-        direction: "ascending",
-    });
-    const [page, setPage] = useState(1);
-    const rowsPerPage = 10;
-
-    useEffect(() => {
-        setPage(1);
-        obtenerProductos();
-    }, [filterValue]);
-
-    const totalItems = productos.length;
-    const totalPages = totalItems > 0 ? Math.ceil(totalItems / rowsPerPage) : 1;
-    const pages = totalPages;
-
-    const hasSearchFilter = Boolean(filterValue);
-
-
-    const headerColumns = React.useMemo(() => {
-        return [
-            { uid: "nombre", name: "Nombre", sortable: true },
-            { uid: "marca", name: "Marca", sortable: true },
-            { uid: "modelo", name: "Modelo", sortable: true },
-            { uid: "precio", name: "Precio", sortable: true },
-            { uid: "actions", name: "Acciones", sortable: false },
-        ];
-    }, []);
-
-    const filteredItems = React.useMemo(() => {
-        let filteredProducts = [...productos];
-
-        if (hasSearchFilter) {
-            filteredProducts = filteredProducts.filter((product) =>
-                filterValue === "" ||
-                product.nombre.toLowerCase().includes(filterValue.toLowerCase()) ||
-                product.marca.toLowerCase().includes(filterValue.toLowerCase()) ||
-                product.modelo.toLowerCase().includes(filterValue.toLowerCase())
-            );
-        }
-
-        return filteredProducts;
-    }, [productos, filterValue]);
-
-    const items = React.useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-
-        return filteredItems.slice(start, end);
-    }, [page, filteredItems, rowsPerPage]);
-
-    const renderCell = React.useCallback(
-        (product: Producto, columnKey: React.Key) => {
-            const cellValue = product[columnKey as keyof Producto];
-            switch (columnKey) {
-                case "nombre":
-                    return <span>{cellValue}</span>;
-                case "marca":
-                case "modelo":
-                    return <span className="text-bold">{cellValue}</span>;
-                case "precio":
-                    const priceValue = typeof cellValue === "string" ? parseFloat(cellValue) : cellValue;
-                    return <span>${priceValue.toFixed(2)}</span>;
-                case "actions":
-                    return (
-                        <div className=" flex justify-center items-center gap-3">
-                            <Button
-                                variant="flat"
-                                size="sm"
-                                startContent={<AiOutlineEdit size={"1.1rem"} />}
-                                onClick={() => handleEditarProducto(product)}>
-                                Editar
-                            </Button>
-                            <Button
-                                color="danger"
-                                variant="ghost"
-                                startContent={<BiSolidTrashAlt />}
-                                size="sm"
-                                onClick={() => handleEliminarProducto(product)}>
-                                Eliminar
-                            </Button>
-                        </div>
-                    );
-                default:
-                    return cellValue;
-            }
-        },
-        []
-    );
-
+    //<!--Login-->
     const [formState, setFormState] = useState<FormState>({
         email: '',
         password: '',
@@ -169,13 +76,13 @@ export default function App() {
         setLoginMessage(message);
         setTimeout(() => {
             setLoginMessage('');
-        }, 5000); // Limpiar el mensaje después de 5 segundos
+        }, 5000);
     };
     const handleUploadMessage = (message: string, isError: boolean) => {
         setUploadMessage({ message, isError });
         setTimeout(() => {
             setUploadMessage(null);
-        }, 5000); // Limpiar el mensaje después de 5 segundos
+        }, 5000);
     };
 
     const handleInputChange = (name: string, value: string) => {
@@ -196,88 +103,6 @@ export default function App() {
     const onClose = () => {
         setIsOpen(false);
     };
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const obtenerProductos = async () => {
-        try {
-            const productosCollection = collection(db, "productos");
-            const productosSnapshot = await getDocs(productosCollection);
-
-            const productosData: Producto[] = [];
-            productosSnapshot.forEach((doc) => {
-                const producto = { id: doc.id, ...doc.data() } as Producto;
-                productosData.push(producto);
-            });
-
-            setProductos(productosData);
-        } catch (error) {
-            toast.error("Error al obtener la lista de productos");
-        }
-    };
-    const [productToDelete, setProductToDelete] = useState<Producto | null>(null);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-    const handleEliminarProducto = (producto: Producto) => {
-        setProductToDelete(producto);
-        setShowDeleteModal(true);
-    };
-
-    const confirmarEliminarProducto = async () => {
-        if (productToDelete) {
-            try {
-                const productosCollection = collection(db, "productos");
-                await deleteDoc(doc(productosCollection, productToDelete.id));
-
-                // Actualizar la lista de productos después de la eliminación
-                obtenerProductos();
-
-                toast.success("Producto eliminado con éxito");
-            } catch (error) {
-                toast.error("Error al eliminar el producto");
-            }
-        }
-
-        // Resetear los estados después de la eliminación
-        setProductToDelete(null);
-        setShowDeleteModal(false);
-    };
-
-    const cancelarEliminarProducto = () => {
-        // Resetear los estados si el usuario cancela
-        setProductToDelete(null);
-        setShowDeleteModal(false);
-    };
-
-    const [editProducto, setEditProducto] = useState<Producto | null>(null);
-
-    const handleEditarProducto = async (producto: Producto) => {
-        setEditProducto(producto);
-    };
-
-    const handleGuardarEdicion = async () => {
-        if (editProducto) {
-            try {
-                const productosCollection = collection(db, "productos");
-                const productoDoc = doc(productosCollection, editProducto.id);
-                await updateDoc(productoDoc, {
-                    nombre: editProducto.nombre,
-                    marca: editProducto.marca,
-                    modelo: editProducto.modelo,
-                    precio: editProducto.precio,
-                    imagen: editProducto.imagen,
-                });
-
-                // Limpiar el estado de edición y actualizar la lista de productos
-                setEditProducto(null);
-                obtenerProductos();
-
-                toast.success("Producto editado con éxito");
-            } catch (error) {
-                toast.error("Error al editar el producto");
-            }
-        }
-    }
-
     useEffect(() => {
         // Verifica el estado de autenticación cuando el componente se monta
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -327,6 +152,9 @@ export default function App() {
             console.log(error.message)
         });
     }
+
+    //<!--Agregar-->
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [formData, setFormData] = useState<FormData>({
         nombre: "",
@@ -400,12 +228,188 @@ export default function App() {
             toast.warning("Por favor, complete todos los campos.");
         }
     };
+    //<!--Edicion-->
+    const [editProducto, setEditProducto] = useState<Producto | null>(null);
+
+    const handleEditarProducto = async (producto: Producto) => {
+        setEditProducto(producto);
+    };
+
+    const handleGuardarEdicion = async () => {
+        if (editProducto) {
+            try {
+                const productosCollection = collection(db, "productos");
+                const productoDoc = doc(productosCollection, editProducto.id);
+                await updateDoc(productoDoc, {
+                    nombre: editProducto.nombre,
+                    marca: editProducto.marca,
+                    modelo: editProducto.modelo,
+                    precio: editProducto.precio,
+                    imagen: editProducto.imagen,
+                });
+
+                // Limpiar el estado de edición y actualizar la lista de productos
+                setEditProducto(null);
+                obtenerProductos();
+
+                toast.success("Producto editado con éxito");
+            } catch (error) {
+                toast.error("Error al editar el producto");
+            }
+        }
+    }
+    //<!--Eliminar-->
+    const [productToDelete, setProductToDelete] = useState<Producto | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const handleEliminarProducto = (producto: Producto) => {
+        setProductToDelete(producto);
+        setShowDeleteModal(true);
+    };
+
+    const confirmarEliminarProducto = async () => {
+        if (productToDelete) {
+            try {
+                const productosCollection = collection(db, "productos");
+                await deleteDoc(doc(productosCollection, productToDelete.id));
+
+                // Actualizar la lista de productos después de la eliminación
+                obtenerProductos();
+
+                toast.success("Producto eliminado con éxito");
+            } catch (error) {
+                toast.error("Error al eliminar el producto");
+            }
+        }
+
+        // Resetear los estados después de la eliminación
+        setProductToDelete(null);
+        setShowDeleteModal(false);
+    };
+
+    const cancelarEliminarProducto = () => {
+        // Resetear los estados si el usuario cancela
+        setProductToDelete(null);
+        setShowDeleteModal(false);
+    };
+    //<!--Filtros-->
+    const [filterValue, setFilterValue] = useState("");
+    const [productos, setProductos] = useState<Producto[]>([]);
+    const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
+    visibleColumns;
+    const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+        column: "nombre",
+        direction: "ascending",
+    });
+    const [page, setPage] = useState(1);
+    const rowsPerPage = 10;
+
+    useEffect(() => {
+        setPage(1);
+        obtenerProductos();
+    }, [filterValue]);
+
+    const totalItems = productos.length;
+    const totalPages = totalItems > 0 ? Math.ceil(totalItems / rowsPerPage) : 1;
+    const pages = totalPages;
+
+    const hasSearchFilter = Boolean(filterValue);
+
+    const headerColumns = React.useMemo(() => {
+        return [
+            { uid: "nombre", name: "Nombre", sortable: true },
+            { uid: "marca", name: "Marca", sortable: true },
+            { uid: "modelo", name: "Modelo", sortable: true },
+            { uid: "precio", name: "Precio", sortable: true },
+            { uid: "actions", name: "Acciones", sortable: false },
+        ];
+    }, []);
+
+    const filteredItems = React.useMemo(() => {
+        let filteredProducts = [...productos];
+
+        if (hasSearchFilter) {
+            filteredProducts = filteredProducts.filter((product) =>
+                filterValue === "" ||
+                product.nombre.toLowerCase().includes(filterValue.toLowerCase()) ||
+                product.marca.toLowerCase().includes(filterValue.toLowerCase()) ||
+                product.modelo.toLowerCase().includes(filterValue.toLowerCase())
+            );
+        }
+
+        return filteredProducts;
+    }, [productos, filterValue]);
+
+    const items = React.useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return filteredItems.slice(start, end);
+    }, [page, filteredItems, rowsPerPage]);
+
+    const renderCell = React.useCallback(
+        (product: Producto, columnKey: React.Key) => {
+            const cellValue = product[columnKey as keyof Producto];
+            switch (columnKey) {
+                case "nombre":
+                    return <span>{cellValue}</span>;
+                case "marca":
+                case "modelo":
+                    return <span className="text-bold">{cellValue}</span>;
+                case "precio":
+                    const priceValue = typeof cellValue === "string" ? parseFloat(cellValue) : cellValue;
+                    return <span>${priceValue.toFixed(2)}</span>;
+                case "actions":
+                    return (
+                        <div className=" flex justify-center items-center gap-3">
+                            <Button
+                                variant="flat"
+                                size="sm"
+                                startContent={<AiOutlineEdit size={"1.1rem"} />}
+                                onClick={() => handleEditarProducto(product)}>
+                                Editar
+                            </Button>
+                            <Button
+                                color="danger"
+                                variant="ghost"
+                                startContent={<BiSolidTrashAlt />}
+                                size="sm"
+                                onClick={() => handleEliminarProducto(product)}>
+                                Eliminar
+                            </Button>
+                        </div>
+                    );
+                default:
+                    return cellValue;
+            }
+        },
+        []
+    );
+
+    //<!--Obtener Productos-->
+    const obtenerProductos = async () => {
+        try {
+            const productosCollection = collection(db, "productos");
+            const productosSnapshot = await getDocs(productosCollection);
+
+            const productosData: Producto[] = [];
+            productosSnapshot.forEach((doc) => {
+                const producto = { id: doc.id, ...doc.data() } as Producto;
+                productosData.push(producto);
+            });
+
+            setProductos(productosData);
+        } catch (error) {
+            toast.error("Error al obtener la lista de productos");
+        }
+    };
 
     const handleActualizarTabla = () => {
         obtenerProductos();
         toast.info("Tabla actualizada con exito.")
     };
 
+    //<!--Cabezera de la tabla-->
     const topContent = React.useMemo(() => {
         return (
             <div className="flex flex-col gap-4">
@@ -459,6 +463,7 @@ export default function App() {
         );
     }, [filterValue, productos.length]);
 
+    //<!--Footer de la tabla-->
     const bottomContent = React.useMemo(() => {
         return (
             <div className="md:py-2 md:px-2 flex justify-end items-center">
