@@ -20,6 +20,7 @@ import {
     NavbarContent,
     NavbarItem,
     Link,
+    ButtonGroup,
 } from "@nextui-org/react";
 import { FaPlus } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
@@ -47,6 +48,7 @@ interface FormData {
     modelo: string;
     precio: string;
     imagen: File | null;
+    existencias: string;
 }
 
 interface Producto {
@@ -56,6 +58,7 @@ interface Producto {
     modelo: string;
     precio: number;
     imagen: string;
+    existencias: string;
 }
 
 const INITIAL_VISIBLE_COLUMNS = ["image", "nombre", "marca", "modelo", "precio", "actions"];
@@ -162,6 +165,7 @@ export default function App() {
         modelo: "",
         precio: "",
         imagen: null,
+        existencias: "",
     });
 
     const handleInputChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -189,7 +193,8 @@ export default function App() {
             formData.marca &&
             formData.modelo &&
             formData.precio &&
-            formData.imagen
+            formData.imagen &&
+            formData.existencias
         ) {
             try {
 
@@ -204,6 +209,7 @@ export default function App() {
                     modelo: formData.modelo,
                     precio: parseFloat(formData.precio),
                     imagen: imageUrl,
+                    existencias: parseInt(formData.existencias),
                 };
 
                 await addDoc(productosCollection, nuevoProducto);
@@ -215,6 +221,7 @@ export default function App() {
                     modelo: "",
                     precio: "",
                     imagen: null,
+                    existencias: "",
                 });
 
                 handleUploadMessage('Producto subido correctamente', false);
@@ -246,6 +253,7 @@ export default function App() {
                     modelo: editProducto.modelo,
                     precio: editProducto.precio,
                     imagen: editProducto.imagen,
+                    existencias: editProducto.existencias,
                 });
 
                 // Limpiar el estado de edición y actualizar la lista de productos
@@ -321,6 +329,7 @@ export default function App() {
             { uid: "marca", name: "Marca", sortable: true },
             { uid: "modelo", name: "Modelo", sortable: true },
             { uid: "precio", name: "Precio", sortable: true },
+            { uid: "existencias", name: "Existencias", sortable: true },
             { uid: "actions", name: "Acciones", sortable: false },
         ];
     }, []);
@@ -359,14 +368,17 @@ export default function App() {
                 case "precio":
                     const priceValue = typeof cellValue === "string" ? parseFloat(cellValue) : cellValue;
                     return <span>${priceValue.toFixed(2)}</span>;
+                case "existencias":
+                    return <span>{cellValue}</span>
                 case "actions":
                     return (
                         <div className=" flex justify-center items-center gap-3">
                             <Button
                                 variant="flat"
                                 size="sm"
+                                color="warning"
                                 startContent={<AiOutlineEdit size={"1.1rem"} />}
-                                onClick={() => handleEditarProducto(product)}>
+                                onPress={() => handleEditarProducto(product)}>
                                 Editar
                             </Button>
                             <Button
@@ -374,7 +386,7 @@ export default function App() {
                                 variant="ghost"
                                 startContent={<BiSolidTrashAlt />}
                                 size="sm"
-                                onClick={() => handleEliminarProducto(product)}>
+                                onPress={() => handleEliminarProducto(product)}>
                                 Eliminar
                             </Button>
                         </div>
@@ -433,7 +445,7 @@ export default function App() {
                         <Button
                             variant="flat"
                             size="sm"
-                            onClick={handleActualizarTabla}
+                            onPress={handleActualizarTabla}
                             isIconOnly
                         >
                             <IoReload size={"1.1rem"} />
@@ -443,7 +455,7 @@ export default function App() {
                             className=" text-background text-sm "
                             endContent={<FaPlus size={"1rem"} />}
                             size="sm"
-                            onClick={() => setIsModalOpen(true)}
+                            onPress={() => setIsModalOpen(true)}
                         >
                             Nuevo
                         </Button>
@@ -451,7 +463,7 @@ export default function App() {
                             color="danger"
                             type="submit"
                             size="sm"
-                            onClick={handleSignOut}
+                            onPress={handleSignOut}
                             endContent={<IoExitOutline size={"1.2rem"} />}
                             className="text-background text-sm max-w-xs">
                             Salir
@@ -497,7 +509,7 @@ export default function App() {
                 </NavbarBrand>
                 <NavbarContent justify="end">
                     <NavbarItem>
-                        <Button as={Link} color="secondary" href="/" variant="light" startContent={<IoHome />} onClick={handleSignOut}>
+                        <Button as={Link} color="secondary" href="/" variant="light" startContent={<IoHome />} onPress={handleSignOut}>
                             <p className="font-semibold">Home</p>
                         </Button>
                     </NavbarItem>
@@ -572,10 +584,10 @@ export default function App() {
                     <ModalContent>
                         <ModalHeader>¿Estás seguro de que deseas eliminar este producto?</ModalHeader>
                         <ModalFooter>
-                            <Button color="danger" onClick={confirmarEliminarProducto}>
+                            <Button color="danger" onPress={confirmarEliminarProducto}>
                                 Eliminar
                             </Button>
-                            <Button color="default" onClick={cancelarEliminarProducto}>
+                            <Button color="default" onPress={cancelarEliminarProducto}>
                                 Cancelar
                             </Button>
                         </ModalFooter>
@@ -615,15 +627,24 @@ export default function App() {
                                         value={editProducto.precio.toString()}
                                         onChange={(e) => setEditProducto({ ...editProducto, precio: parseFloat(e.target.value) })}
                                     />
+                                    <Input
+                                        label="Existencias"
+                                        placeholder="Existencias del producto"
+                                        type="number"
+                                        value={editProducto.existencias.toString()}
+                                        onChange={(e) => setEditProducto({ ...editProducto, existencias: e.target.value })}
+                                    />
                                 </form>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="primary" onClick={handleGuardarEdicion}>
-                                    Guardar Edición
-                                </Button>
-                                <Button color="default" onClick={() => setEditProducto(null)}>
-                                    Cancelar
-                                </Button>
+                                <ButtonGroup>
+                                    <Button color="success" variant="flat" onPress={handleGuardarEdicion}>
+                                        Guardar Edición
+                                    </Button>
+                                    <Button color="danger" variant="light" onPress={() => setEditProducto(null)}>
+                                        Cancelar
+                                    </Button>
+                                </ButtonGroup>
                             </ModalFooter>
                         </ModalContent>
                     </Modal>
@@ -637,7 +658,7 @@ export default function App() {
                             </ModalHeader>
                             <ModalBody>
                                 {/* Formulario de agregar producto */}
-                                <form action="" onSubmit={handleSubmitForm} className=" w-full items-center space-y-11 p-6">
+                                <form onSubmit={handleSubmitForm} className=" w-full items-center space-y-11 p-6">
                                     <Input
                                         isRequired
                                         type="text"
@@ -685,24 +706,42 @@ export default function App() {
                                     />
                                     <Input
                                         isRequired
+                                        type="number"
+                                        label="Existencias"
+                                        placeholder="0"
+                                        labelPlacement="outside"
+                                        name="existencias"
+                                        value={formData.existencias}
+                                        onChange={handleInputChangeForm}
+                                    />
+                                    <Input
+                                        isRequired
                                         type="file"
                                         label="Imagen"
                                         placeholder="Selecciona el archivo"
                                         labelPlacement="outside"
                                         accept="image/*"
                                         onChange={handleImagenChange}
+                                        className="block "
+                                        classNames={{
+                                            input: [
+                                                "pt-2",
+                                            ],
+                                        }}
                                     />
+                                    <ModalFooter className="p-0">
+                                        {uploadMessage && <p></p>}
+                                        <ButtonGroup>
+                                            <Button color="success" variant="flat" type="submit">
+                                                Agregar
+                                            </Button>
+                                            <Button color="danger" variant="light" onPress={() => setIsModalOpen(false)}>
+                                                Cancelar
+                                            </Button>
+                                        </ButtonGroup>
+                                    </ModalFooter>
                                 </form>
                             </ModalBody>
-                            <ModalFooter>
-                                {uploadMessage && <p></p>}
-                                <Button color="primary" onClick={() => setIsModalOpen(false)}>
-                                    Cancelar
-                                </Button>
-                                <Button color="success" type="submit" onClick={handleSubmitForm}>
-                                    Agregar
-                                </Button>
-                            </ModalFooter>
                         </ModalContent>
                     </Modal>
 
@@ -737,7 +776,7 @@ export default function App() {
                     <TableBody emptyContent={"No se encontraron productos"} items={items}>
                         {(item) => (
                             <TableRow key={item.id}>
-                                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                                {(columnKey) => <TableCell className="md:min-w-[110px]">{renderCell(item, columnKey)}</TableCell>}
                             </TableRow>
                         )}
                     </TableBody>

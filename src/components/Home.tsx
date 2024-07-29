@@ -16,6 +16,7 @@ interface Product {
     modelo: string;
     precio: number;
     imagen: string;
+    existencias: string;
 }
 
 const Home: React.FC = () => {
@@ -133,6 +134,7 @@ const Home: React.FC = () => {
                                         imagen={item.imagen}
                                         marca={item.marca}
                                         modelo={item.modelo}
+                                        existencias={item.existencias}
                                     />
                                 ))}
                             </div>
