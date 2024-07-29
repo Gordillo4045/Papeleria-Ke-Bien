@@ -9,14 +9,15 @@ interface ProductCardProps {
   modelo: string;
   precio: number;
   imagen: string;
+  existencias: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, marca, modelo }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, marca, modelo, existencias }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedProduct, setSelectedProduct] = useState<ProductCardProps | null>(null);
 
   const handleOpen = () => {
-    setSelectedProduct({ id, nombre, marca, modelo, precio, imagen });
+    setSelectedProduct({ id, nombre, marca, modelo, precio, imagen, existencias });
     onOpen();
   };
 
@@ -66,6 +67,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                   src={selectedProduct?.imagen}
                 />
                 <p>{`Precio: $${selectedProduct?.precio.toFixed(2)}`}</p>
+                <span>Existencias: {selectedProduct?.existencias} piezas</span>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
