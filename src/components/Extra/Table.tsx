@@ -25,16 +25,16 @@ import {
 import { FaPlus } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
-import { auth, db, storage } from "../Config/Config";
+import { auth, db, storage } from "../../Config/Config.js";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { IoExitOutline, IoReload, IoHome } from "react-icons/io5";
 import { BiSolidTrashAlt } from "react-icons/bi";
 import { AiOutlineEdit } from "react-icons/ai";
 //@ts-ignore
-import { MailIcon } from '../assets/MailIcon.jsx'
+import { MailIcon } from '../../assets/MailIcon.jsx'
 //@ts-ignore
-import { LockIcon } from '../assets/LockIcon.jsx'
+import { LockIcon } from '../../assets/LockIcon.jsx'
 import { toast } from 'sonner';
 
 interface FormState {

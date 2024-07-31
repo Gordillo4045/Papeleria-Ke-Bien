@@ -1,7 +1,7 @@
 import Home from './components/Home'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ErrorPage from './components/ErrorPage'
-import ProductsTable from './components/Table'
+import ProductsTable from './components/Controlpanel'
 function App() {
 
   return (
