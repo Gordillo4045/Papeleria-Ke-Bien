@@ -59,6 +59,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
               <ModalBody>
                 <Image
                   isBlurred
+                  isZoomed
                   shadow="sm"
                   radius="lg"
                   width="100%"

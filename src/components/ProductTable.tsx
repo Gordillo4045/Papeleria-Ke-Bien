@@ -10,7 +10,7 @@ import {
     Button,
     Pagination,
     SortDescriptor,
-    Tooltip
+    Tooltip,
 } from "@nextui-org/react";
 import { IoIosSearch } from "react-icons/io";
 import { IoReload } from "react-icons/io5";
@@ -185,18 +185,18 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
 
     const bottomContent = useMemo(() => {
         return (
-            <div className="py-2 px-2 flex justify-between items-center">
+            <div className="md:py-2 md:px-2 flex justify-between items-center">
                 <Pagination
-                    isCompact
                     classNames={{
                         cursor: "bg-foreground text-background",
                     }}
                     color="default"
-                    isDisabled={hasSearchFilter}
                     page={page}
-                    total={Math.ceil(filteredItems.length / rowsPerPage)}
+                    total={productos.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1}
                     variant="light"
                     onChange={setPage}
+                    initialPage={page}
+                    isCompact
                 />
                 <span className="text-[0.7rem] md:text-small text-default-400">
                     {`${items.length} de ${filteredItems.length} productos`}

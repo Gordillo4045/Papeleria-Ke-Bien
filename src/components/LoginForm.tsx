@@ -56,7 +56,6 @@ export default function LoginForm({ isOpen, onClose }: LoginFormProps) {
             toast.success("Inicio de sesión exitoso");
             onClose();
         } catch (error) {
-            console.log(error);
             toast.error("Error en el inicio de sesión. Verifica tus credenciales.");
         }
     };
