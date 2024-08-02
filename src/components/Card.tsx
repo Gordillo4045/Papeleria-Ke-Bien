@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Card, CardBody, CardFooter, Image, Input, Popover, PopoverContent, PopoverTrigger, useDisclosure } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
+import { useCart } from './CartContext';
+import { FaCartPlus } from "react-icons/fa6";
+import { toast } from 'sonner';
 
 interface ProductCardProps {
   id: string;
@@ -12,13 +15,21 @@ interface ProductCardProps {
   existencias: string;
 }
 
+
 const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, marca, modelo, existencias }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedProduct, setSelectedProduct] = useState<ProductCardProps | null>(null);
+  const { addToCart } = useCart();
+  const [cantidad, setCantidad] = useState(1);
 
   const handleOpen = () => {
     setSelectedProduct({ id, nombre, marca, modelo, precio, imagen, existencias });
     onOpen();
+  };
+
+  const handleAddToCart = () => {
+    addToCart({ id, nombre, marca, modelo, precio, imagen, existencias, cantidad });
+    toast.success("Producto agregado al carrito ")
   };
 
   return (
@@ -76,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                 </Button>
                 <Popover placement="bottom" showArrow >
                   <PopoverTrigger>
-                    <Button color="primary" onPress={onClose}>
+                    <Button color="primary">
                       Comprar
                     </Button>
                   </PopoverTrigger>
@@ -86,8 +97,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                         <p className="text-small font-bold text-foreground" {...titleProps}>
                           Cantidad
                         </p>
-                        <div className="mt-2 flex flex-col gap-2 w-full">
-                          <Input defaultValue="0" type='number' size="sm" variant="underlined" autoFocus />
+                        <div className="mt-2 flex gap-2 w-full">
+                          <Input
+                            defaultValue="1"
+                            type="number"
+                            size="sm"
+                            variant="underlined"
+                            autoFocus
+                            onChange={(e) => setCantidad(parseInt(e.target.value))}
+                          />
+                          <Button color="primary" variant='light' isIconOnly onPress={handleAddToCart}>
+                            <FaCartPlus size={20} />
+                          </Button>
                         </div>
                       </div>
                     )}

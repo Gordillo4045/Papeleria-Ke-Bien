@@ -2,6 +2,8 @@ import { Navbar, NavbarContent, Input, NavbarBrand, Badge, Button } from "@nextu
 //@ts-ignore
 import { SearchIcon } from "../assets/SearchIcon";
 import { FaCartShopping } from "react-icons/fa6";
+import CartModal from "./CartModal";
+import { useState } from "react";
 
 interface NavbarProps {
   onSearchChange: (searchTerm: string) => void;
@@ -9,38 +11,54 @@ interface NavbarProps {
 }
 
 const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => {
+  const [isCartModalOpen, setcartModalOpen] = useState(false);
+
+  const handleCartModalOpen = () => {
+    setcartModalOpen(true);
+  }
+
+  const handleCartModalClose = () => {
+    setcartModalOpen(false);
+  }
 
   return (
-    <Navbar shouldHideOnScroll >
-      <NavbarContent justify="start">
-        <NavbarBrand>
-          <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
-        </NavbarBrand>
-      </NavbarContent>
-      <NavbarContent as="div" className="items-center w-full" justify="center">
-        <Input
-          classNames={
-            {
-              base: "max-w-full h-10",
-              mainWrapper: "h-full flex items-center self-center md:w-96",
-              input: "text-small ",
-              inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
-          placeholder="Busqueda..."
-          size="sm"
-          startContent={<SearchIcon size={18} />}
-          type="search"
-          value={SearchTerm}
-          onValueChange={(values) => onSearchChange(values)}
-        />
-        <Badge color="danger" content={0} shape="circle" size="sm" showOutline={false}
-        >
-          <Button isIconOnly radius="full" variant="light">
-            <FaCartShopping size={25} />
-          </Button>
-        </Badge >
-      </NavbarContent>
-    </Navbar>
+    <>
+      <Navbar shouldHideOnScroll >
+        <NavbarContent justify="start">
+          <NavbarBrand>
+            <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
+          </NavbarBrand>
+        </NavbarContent>
+        <NavbarContent as="div" className="items-center w-full" justify="center">
+          <Input
+            classNames={
+              {
+                base: "max-w-full h-10",
+                mainWrapper: "h-full flex items-center self-center md:w-96",
+                input: "text-small ",
+                inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+              }}
+            placeholder="Busqueda..."
+            size="sm"
+            startContent={<SearchIcon size={18} />}
+            type="search"
+            value={SearchTerm}
+            onValueChange={(values) => onSearchChange(values)}
+          />
+          <Badge color="danger" content={0} shape="circle" size="sm" showOutline={false}
+          >
+            <Button isIconOnly radius="full" variant="light" onPress={handleCartModalOpen}>
+              <FaCartShopping size={25} />
+            </Button>
+          </Badge >
+        </NavbarContent>
+      </Navbar>
+
+      <CartModal
+        isOpen={isCartModalOpen}
+        onClose={handleCartModalClose}
+      />
+    </>
   );
 };
 
