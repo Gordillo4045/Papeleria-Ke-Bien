@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, CardBody, CardFooter, Image, useDisclosure } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image, Input, Popover, PopoverContent, PopoverTrigger, useDisclosure } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
 
 interface ProductCardProps {
@@ -74,9 +74,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
                 </Button>
-                <Button color="primary" isDisabled onPress={onClose}>
-                  Comprar
-                </Button>
+                <Popover placement="bottom" showArrow >
+                  <PopoverTrigger>
+                    <Button color="primary" onPress={onClose}>
+                      Comprar
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[120px]">
+                    {(titleProps) => (
+                      <div className="px-1 py-2 w-full">
+                        <p className="text-small font-bold text-foreground" {...titleProps}>
+                          Cantidad
+                        </p>
+                        <div className="mt-2 flex flex-col gap-2 w-full">
+                          <Input defaultValue="0" type='number' size="sm" variant="underlined" autoFocus />
+                        </div>
+                      </div>
+                    )}
+                  </PopoverContent>
+                </Popover>
+
               </ModalFooter>
             </>
           )}
