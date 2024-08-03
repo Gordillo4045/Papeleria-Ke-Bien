@@ -41,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
         </CardFooter>
       </Card>
 
-      <Modal placement='top' isOpen={isOpen} onOpenChange={onOpenChange} >
+      <Modal placement='center' isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior='inside' >
         <ModalContent>
           {(onClose) => (
             <>
