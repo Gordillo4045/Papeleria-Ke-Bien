@@ -1,18 +1,26 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from './components/Home'
-import ErrorPage from './components/ErrorPage'
-import ProductsTable from './components/Controlpanel'
+import Home from './components/Home';
+import ErrorPage from './components/ErrorPage';
+import ProductsTable from './components/Controlpanel';
+import { Toaster } from "sonner";
+import { NextUIProvider } from "@nextui-org/react";
+
 function App() {
 
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/controlpanel' element={<ProductsTable />} />
-        <Route path='*' element={<ErrorPage />} />
-      </Routes>
-    </Router>
+    <NextUIProvider>
+      <div className={` text-foreground bg-background`}>
+        <Router>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/controlpanel' element={<ProductsTable />} />
+            <Route path='*' element={<ErrorPage />} />
+          </Routes>
+        </Router>
+        <Toaster richColors position="bottom-center" />
+      </div>
+    </NextUIProvider>
   )
 }
 
-export default App
+export default App;
