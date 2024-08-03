@@ -4,6 +4,7 @@ import { SearchIcon } from "../assets/SearchIcon";
 import { FaCartShopping } from "react-icons/fa6";
 import CartModal from "./CartModal";
 import { useState } from "react";
+import { useCart } from "./CartContext";
 
 interface NavbarProps {
   onSearchChange: (searchTerm: string) => void;
@@ -11,7 +12,10 @@ interface NavbarProps {
 }
 
 const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => {
+  const { cart } = useCart(); // Obtener el carrito del contexto
+
   const [isCartModalOpen, setcartModalOpen] = useState(false);
+  const totalProductos = cart.reduce((total, producto) => total + producto.cantidad, 0);
 
   const handleCartModalOpen = () => {
     setcartModalOpen(true);
@@ -45,7 +49,7 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
             value={SearchTerm}
             onValueChange={(values) => onSearchChange(values)}
           />
-          <Badge color="danger" content={0} shape="circle" size="sm" showOutline={false}
+          <Badge color="danger" content={totalProductos} shape="circle" size="sm" showOutline={false}
           >
             <Button isIconOnly radius="full" variant="light" onPress={handleCartModalOpen}>
               <FaCartShopping size={25} />

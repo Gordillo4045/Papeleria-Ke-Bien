@@ -8,7 +8,6 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { SearchIcon } from "../assets/SearchIcon"
 import CustomNavbar from "./NavBarCustom";
 import Footer from "./Footer";
-import { CartProvider } from './CartContext';
 
 interface Product {
     id: string;
@@ -102,66 +101,64 @@ const Home: React.FC = () => {
         setSearchTerm("");
     };
     return (
-        <CartProvider>
-            <div className="container min-h-screen md:mx-auto">
-                <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm} />
-                <div className="flex flex-col lg:flex-row">
-                    <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex justify-center">
-                        <Filters
-                            precioRange={precioRange}
-                            onPrecioRangeChange={setPrecioRange}
-                            selectedMarcas={selectedMarcas}
-                            onMarcasChange={setSelectedMarcas}
-                            selectedProductos={selectedProductos}
-                            onProductosChange={setSelectedProductos}
-                            onSearchChange={setSearchTerm}
-                            onResetFilters={handleResetFilters}
+        <div className="container min-h-screen md:mx-auto">
+            <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm} />
+            <div className="flex flex-col lg:flex-row">
+                <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex justify-center">
+                    <Filters
+                        precioRange={precioRange}
+                        onPrecioRangeChange={setPrecioRange}
+                        selectedMarcas={selectedMarcas}
+                        onMarcasChange={setSelectedMarcas}
+                        selectedProductos={selectedProductos}
+                        onProductosChange={setSelectedProductos}
+                        onSearchChange={setSearchTerm}
+                        onResetFilters={handleResetFilters}
 
-                        />
-                    </div>
-                    <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
-                        {currentItems.length === 0 ? (
-                            <div className="text-center text-gray-500 mt-8">
-                                No se encontraron productos con los filtros seleccionados.
-                            </div>
-                        ) : (
-                            <>
-                                <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                                    {currentItems.map((item) => (
-                                        <ProductCard
-                                            key={item.id}
-                                            id={item.id}
-                                            nombre={item.nombre}
-                                            precio={item.precio}
-                                            imagen={item.imagen}
-                                            marca={item.marca}
-                                            modelo={item.modelo}
-                                            existencias={item.existencias}
-                                        />
-                                    ))}
-                                </div>
-                                <div className="flex justify-center">
-                                    <Pagination
-                                        total={totalPages}
-                                        initialPage={currentPage}
-                                        page={currentPage}
-                                        variant={"light"}
-                                        onChange={paginate}
-                                        color="default"
-                                        classNames={{
-                                            cursor: "bg-foreground text-background",
-                                        }}
-                                    />
-                                </div>
-                            </>
-                        )}
-                    </div>
+                    />
                 </div>
-                <div className="rounded-b-lg shadow-xl">
-                    <Footer />
+                <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
+                    {currentItems.length === 0 ? (
+                        <div className="text-center text-gray-500 mt-8">
+                            No se encontraron productos con los filtros seleccionados.
+                        </div>
+                    ) : (
+                        <>
+                            <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                                {currentItems.map((item) => (
+                                    <ProductCard
+                                        key={item.id}
+                                        id={item.id}
+                                        nombre={item.nombre}
+                                        precio={item.precio}
+                                        imagen={item.imagen}
+                                        marca={item.marca}
+                                        modelo={item.modelo}
+                                        existencias={item.existencias}
+                                    />
+                                ))}
+                            </div>
+                            <div className="flex justify-center">
+                                <Pagination
+                                    total={totalPages}
+                                    initialPage={currentPage}
+                                    page={currentPage}
+                                    variant={"light"}
+                                    onChange={paginate}
+                                    color="default"
+                                    classNames={{
+                                        cursor: "bg-foreground text-background",
+                                    }}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
-        </CartProvider>
+            <div className="rounded-b-lg shadow-xl">
+                <Footer />
+            </div>
+        </div>
     );
 };
 
