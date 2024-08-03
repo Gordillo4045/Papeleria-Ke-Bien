@@ -154,7 +154,7 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
 
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} placement="center">
+        <Modal isOpen={isOpen} onClose={onClose} placement="center" size={window.innerWidth < 768 ? 'full' : 'md'}>
             <ModalContent>
                 <ModalHeader>
                     <h2 className="text-2xl font-bold">
