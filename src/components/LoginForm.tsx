@@ -64,7 +64,7 @@ export default function LoginForm({ isOpen, onClose }: LoginFormProps) {
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            placement="center"
+            placement="top-center"
             hideCloseButton
             isDismissable={false}
             isKeyboardDismissDisabled={true}
