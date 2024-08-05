@@ -4,7 +4,6 @@ import {
     ModalContent,
     ModalHeader,
     ModalBody,
-    ModalFooter,
     Input,
     Button,
     ButtonGroup,
@@ -154,7 +153,7 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
 
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} placement="center" size={window.innerWidth < 768 ? 'full' : 'md'}>
+        <Modal isOpen={isOpen} onClose={onClose} placement="top-center" scrollBehavior='inside'>
             <ModalContent>
                 <ModalHeader>
                     <h2 className="text-2xl font-bold">
@@ -241,7 +240,7 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
                             </div>
                         )}
 
-                        <ModalFooter className='pt-0 pr-0'>
+                        <div className='flex justify-end pt-0 pr-0'>
                             <ButtonGroup>
                                 <Button color="primary" type='submit'>
                                     {editProduct ? "Guardar Cambios" : "Agregar Producto"}
@@ -250,7 +249,7 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
                                     Cancelar
                                 </Button>
                             </ButtonGroup>
-                        </ModalFooter>
+                        </div>
                     </form>
                 </ModalBody>
             </ModalContent>

@@ -35,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
   return (
     <>
       <Card className="w-10/12 mb-4 min-h-[245px]" shadow="sm" key={id} isPressable onPress={handleOpen}>
-        <CardBody className="overflow-visible p-0 flex flex-initial">
+        <CardBody className="overflow-visible p-0 flex flex-initial bg-white">
           <Image
             isZoomed
             shadow="sm"
@@ -52,7 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
         </CardFooter>
       </Card>
 
-      <Modal placement='top' isOpen={isOpen} onOpenChange={onOpenChange} >
+      <Modal placement='center' isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior='inside' >
         <ModalContent>
           {(onClose) => (
             <>

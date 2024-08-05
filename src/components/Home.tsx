@@ -1,13 +1,16 @@
 
-import { useEffect, useState } from "react";
-import { Pagination } from "@nextui-org/react";
+import { useEffect, useRef, useState } from "react";
+import { Button, Card, CardBody, Pagination } from "@nextui-org/react";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { motion, AnimatePresence } from "framer-motion";
 import Filters from "./Filter";
 import ProductCard from "./Card";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import Footer from "./Footer";
+import SearchInput from "./SearchInput";
+import CustomNavbar from "./NavBarCustom";
+import { MdFilterAlt } from "react-icons/md";
 //@ts-ignore
 import { SearchIcon } from "../assets/SearchIcon"
-import CustomNavbar from "./NavBarCustom";
-import Footer from "./Footer";
 
 interface Product {
     id: string;
@@ -100,22 +103,79 @@ const Home: React.FC = () => {
         setPrecioRange([0, 500]);
         setSearchTerm("");
     };
+
+    const [isOpenFilters, setIsOpenFilters] = useState(false);
+    const sidebarRef = useRef<HTMLDivElement>(null);
+
+    const handleOpenFilter = () => {
+        setIsOpenFilters(!isOpenFilters);
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+            setIsOpenFilters(false);
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
         <div className="container min-h-screen md:mx-auto">
             <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm} />
             <div className="flex flex-col lg:flex-row">
-                <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex justify-center">
-                    <Filters
-                        precioRange={precioRange}
-                        onPrecioRangeChange={setPrecioRange}
-                        selectedMarcas={selectedMarcas}
-                        onMarcasChange={setSelectedMarcas}
-                        selectedProductos={selectedProductos}
-                        onProductosChange={setSelectedProductos}
-                        onSearchChange={setSearchTerm}
-                        onResetFilters={handleResetFilters}
+                <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex flex-col">
+                    <Card className="lg:hidden mx-5 mb-3" radius="sm">
+                        <CardBody className="flex flex-row gap-2">
+                            <Button onPress={handleOpenFilter} variant="light" color="primary" startContent={<MdFilterAlt />} className="w-[35%]">Filtros</Button>
+                            <SearchInput
+                                value={searchTerm}
+                                onChange={setSearchTerm}
+                                className=""
+                            />
+                        </CardBody>
+                    </Card>
 
-                    />
+                    <AnimatePresence>
+                        {(isOpenFilters || window.innerWidth >= 1024) && (
+                            <>
+                                {window.innerWidth < 1024 && (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 0.5 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="fixed inset-0 bg-black z-40"
+                                        onClick={() => setIsOpenFilters(false)}
+                                    />
+                                )}
+                                <motion.div
+                                    ref={sidebarRef}
+                                    initial={{ x: "-100%", opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    exit={{ x: "-100%", opacity: 0 }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                    className={`${window.innerWidth < 1024 ? "fixed top-0 left-0 h-full w-[65%] p-2 rounded-r-md bg-white z-50 overflow-y-auto" : ""} lg:block`}
+                                >
+                                    <Filters
+                                        precioRange={precioRange}
+                                        onPrecioRangeChange={setPrecioRange}
+                                        selectedMarcas={selectedMarcas}
+                                        onMarcasChange={setSelectedMarcas}
+                                        selectedProductos={selectedProductos}
+                                        onProductosChange={setSelectedProductos}
+                                        onSearchChange={setSearchTerm}
+                                        onResetFilters={handleResetFilters}
+                                        onClose={() => setIsOpenFilters(false)}
+                                    />
+                                </motion.div>
+                            </>
+                        )}
+                    </AnimatePresence>
                 </div>
                 <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
                     {currentItems.length === 0 ? (
