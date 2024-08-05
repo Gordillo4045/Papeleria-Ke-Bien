@@ -52,7 +52,7 @@ const Filters: React.FC<FiltersProps> = ({
 
   return (
     <div
-      className="  md:flex flex-wrap  md:justify-normal rounded-md gap-2 md:gap-5 lg:gap-0 lg:flex-col max-w-[310px] lg:max-w-md lg:justify-center">
+      className="  lg:flex flex-wrap  md:justify-normal rounded-md gap-2 md:gap-5 lg:gap-0 lg:flex-col max-w-[310px] lg:max-w-md lg:justify-center">
       <div className="w-full flex justify-between items-center mb-4">
         <span className="font-bold text-lg lg:text-xl text-inherit">
           Filtrar por
@@ -84,7 +84,7 @@ const Filters: React.FC<FiltersProps> = ({
       />
       <br />
       <div className="flex gap-2 lg:inline lg:ml-3">
-        <Accordion selectionMode="multiple" isCompact defaultExpandedKeys={["1", "2"]} className="min-w-[260px] sm:min-w-[200px] md:max-w-[230px]">
+        <Accordion selectionMode="multiple" isCompact defaultExpandedKeys={["1", "2"]} className="min-w-[260px] sm:min-w-[200px] md:max-w-[300px]">
           <AccordionItem key={1} aria-label="Filtrar por producto" title="Producto" indicator={<GrProjects />}>
             <ScrollShadow hideScrollBar className="h-48 xl:h-[300px] ">
               <CheckboxGroup value={selectedProductos} onValueChange={(values) => onProductosChange(values as string[])}>
