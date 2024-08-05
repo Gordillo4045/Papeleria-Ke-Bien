@@ -5,7 +5,7 @@ import {
     NavbarContent,
     NavbarItem,
     Button,
-    Link
+    Link,
 } from "@nextui-org/react";
 import { IoHome, IoExitOutline } from "react-icons/io5";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -109,7 +109,6 @@ export default function App() {
         setEditProducto(null);
         obtenerProductos();
     };
-
     return (
         <div className="container min-h-screen md:mx-auto">
             <Navbar>

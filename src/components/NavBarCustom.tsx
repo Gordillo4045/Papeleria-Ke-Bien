@@ -1,6 +1,9 @@
-import { Navbar, NavbarContent, Input, NavbarBrand } from "@nextui-org/react";
-//@ts-ignore
-import { SearchIcon } from "../assets/SearchIcon";
+import { Navbar, NavbarContent, NavbarBrand, Button, Badge } from "@nextui-org/react";
+import SearchInput from "./SearchInput";
+import { useCart } from "./CartContext";
+import { useState } from "react";
+import CartModal from "./CartModal";
+import { FaCartShopping } from "react-icons/fa6";
 
 interface NavbarProps {
   onSearchChange: (searchTerm: string) => void;
@@ -8,30 +11,47 @@ interface NavbarProps {
 }
 
 const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => {
+  const { cart } = useCart(); // Obtener el carrito del contexto
+
+  const [isCartModalOpen, setcartModalOpen] = useState(false);
+  const totalProductos = cart.reduce((total, producto) => total + producto.cantidad, 0);
+
+  const handleCartModalOpen = () => {
+    setcartModalOpen(true);
+  }
+
+  const handleCartModalClose = () => {
+    setcartModalOpen(false);
+  }
 
   return (
-    <Navbar shouldHideOnScroll >
-      <NavbarBrand>
-        <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
-      </NavbarBrand>
-      <NavbarContent as="div" className="items-center w-full" justify="center">
-        <Input
-          classNames={
-            {
-              base: "max-w-full  sm:max-w-[10rem] h-10",
-              mainWrapper: "h-full flex items-center self-center md:w-96",
-              input: "text-small ",
-              inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
-          placeholder="Busqueda..."
-          size="sm"
-          startContent={<SearchIcon size={18} />}
-          type="search"
-          value={SearchTerm}
-          onValueChange={(values) => onSearchChange(values)}
-        />
-      </NavbarContent>
-    </Navbar>
+    <>
+      <Navbar shouldHideOnScroll >
+        <NavbarBrand>
+          <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
+        </NavbarBrand>
+        <NavbarContent as="div" className="items-center w-full hidden lg:flex" justify="center">
+          <SearchInput
+            value={SearchTerm}
+            onChange={onSearchChange}
+            className=""
+          />
+        </NavbarContent>
+        <NavbarContent as="div" justify="end">
+          <Badge color="danger" content={totalProductos} shape="circle" size="sm" showOutline={false}
+          >
+            <Button isIconOnly radius="full" variant="light" onPress={handleCartModalOpen}>
+              <FaCartShopping size={25} />
+            </Button>
+          </Badge >
+        </NavbarContent>
+      </Navbar>
+
+      <CartModal
+        isOpen={isCartModalOpen}
+        onClose={handleCartModalClose}
+      />
+    </>
   );
 };
 
