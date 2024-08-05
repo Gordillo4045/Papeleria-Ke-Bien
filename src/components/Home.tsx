@@ -1,15 +1,16 @@
 
 import { useEffect, useRef, useState } from "react";
-import { Button, Pagination } from "@nextui-org/react";
+import { Button, Card, CardBody, Pagination } from "@nextui-org/react";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { motion, AnimatePresence } from "framer-motion";
 import Filters from "./Filter";
 import ProductCard from "./Card";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import Footer from "./Footer";
+import SearchInput from "./SearchInput";
+import CustomNavbar from "./NavBarCustom";
+import { MdFilterAlt } from "react-icons/md";
 //@ts-ignore
 import { SearchIcon } from "../assets/SearchIcon"
-import CustomNavbar from "./NavBarCustom";
-import Footer from "./Footer";
-import { MdFilterAlt } from "react-icons/md";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface Product {
     id: string;
@@ -128,9 +129,17 @@ const Home: React.FC = () => {
             <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm} />
             <div className="flex flex-col lg:flex-row">
                 <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex flex-col">
-                    <div className="bg-slate-600/10 lg:hidden p-3 m-5 rounded-md">
-                        <Button onPress={handleOpenFilter} startContent={<MdFilterAlt />} variant="light" color="primary">Filtros</Button>
-                    </div>
+                    <Card className="lg:hidden mx-5 mb-3" radius="sm">
+                        <CardBody className="flex flex-row gap-2">
+                            <Button onPress={handleOpenFilter} variant="light" color="primary" startContent={<MdFilterAlt />} className="w-[35%]">Filtros</Button>
+                            <SearchInput
+                                value={searchTerm}
+                                onChange={setSearchTerm}
+                                className=""
+                            />
+                        </CardBody>
+                    </Card>
+
                     <AnimatePresence>
                         {(isOpenFilters || window.innerWidth >= 1024) && (
                             <>
@@ -150,7 +159,7 @@ const Home: React.FC = () => {
                                     animate={{ x: 0, opacity: 1 }}
                                     exit={{ x: "-100%", opacity: 0 }}
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                    className={`${window.innerWidth < 1024 ? "fixed top-0 left-0 h-full w-[65%] p-2 rounded-md bg-white z-50 overflow-y-auto" : ""} lg:block`}
+                                    className={`${window.innerWidth < 1024 ? "fixed top-0 left-0 h-full w-[65%] p-2 rounded-r-md bg-white z-50 overflow-y-auto" : ""} lg:block`}
                                 >
                                     <Filters
                                         precioRange={precioRange}

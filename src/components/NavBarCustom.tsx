@@ -1,6 +1,5 @@
-import { Navbar, NavbarContent, Input, NavbarBrand } from "@nextui-org/react";
-//@ts-ignore
-import { SearchIcon } from "../assets/SearchIcon";
+import { Navbar, NavbarContent, NavbarBrand } from "@nextui-org/react";
+import SearchInput from "./SearchInput";
 
 interface NavbarProps {
   onSearchChange: (searchTerm: string) => void;
@@ -8,27 +7,18 @@ interface NavbarProps {
 }
 
 const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => {
-
   return (
-    <Navbar shouldHideOnScroll >
+    <Navbar shouldHideOnScroll>
       <NavbarBrand>
-        <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
+        <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl">
+          Papeleria Ke Bien
+        </p>
       </NavbarBrand>
-      <NavbarContent as="div" className="items-center w-full" justify="center">
-        <Input
-          classNames={
-            {
-            base: "max-w-full  sm:max-w-[10rem] h-10",
-            mainWrapper: "h-full flex items-center self-center md:w-96",
-            input: "text-small ",
-            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-          }}
-          placeholder="Busqueda..."
-          size="sm"
-          startContent={<SearchIcon size={18} />}
-          type="search"
+      <NavbarContent as="div" className="items-center w-full hidden lg:block" justify="center">
+        <SearchInput
           value={SearchTerm}
-          onValueChange={(values) => onSearchChange(values)}
+          onChange={onSearchChange}
+          className=""
         />
       </NavbarContent>
     </Navbar>
