@@ -14,7 +14,7 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
           Papeleria Ke Bien
         </p>
       </NavbarBrand>
-      <NavbarContent as="div" className="items-center w-full hidden lg:block" justify="center">
+      <NavbarContent as="div" className="items-center w-full hidden lg:flex" justify="center">
         <SearchInput
           value={SearchTerm}
           onChange={onSearchChange}
