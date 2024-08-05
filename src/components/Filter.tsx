@@ -1,8 +1,9 @@
-import { Slider, CheckboxGroup, Checkbox, ScrollShadow, Button, Tooltip } from "@nextui-org/react";
+import { Slider, CheckboxGroup, Checkbox, ScrollShadow, Button, Tooltip, Accordion, AccordionItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { db } from "../Config/Config";
 import { collection, getDocs } from "firebase/firestore";
 import { MdFilterAltOff } from "react-icons/md";
+import { GrProjects } from "react-icons/gr";
 
 interface FiltersProps {
   precioRange: [number, number];
@@ -76,25 +77,31 @@ const Filters: React.FC<FiltersProps> = ({
       />
       <br />
       <div className="flex gap-2 lg:inline lg:pl-5">
-        <ScrollShadow hideScrollBar className="h-48 xl:h-[300px] max-w-[140px] sm:min-w-[210px] md:mr-2">
-          <CheckboxGroup label="Producto" value={selectedProductos} onValueChange={(values) => onProductosChange(values as string[])}>
-            {productos.map((producto) => (
-              <Checkbox key={producto} value={producto}>
-                {producto}
-              </Checkbox>
-            ))}
-          </CheckboxGroup>
-        </ScrollShadow>
+        <Accordion selectionMode="multiple" isCompact defaultExpandedKeys={["1", "2"]}>
+          <AccordionItem key={1} aria-label="Filtrar por producto" title="Producto" indicator={<GrProjects />}>
+            <ScrollShadow hideScrollBar className="h-48 xl:h-[300px] max-w-[140px] sm:min-w-[210px] md:mr-2">
+              <CheckboxGroup value={selectedProductos} onValueChange={(values) => onProductosChange(values as string[])}>
+                {productos.map((producto) => (
+                  <Checkbox key={producto} value={producto}>
+                    {producto}
+                  </Checkbox>
+                ))}
+              </CheckboxGroup>
+            </ScrollShadow>
+          </AccordionItem>
 
-        <ScrollShadow hideScrollBar className="h-48 xl:h-[300px] min-w-[140px] sm:min-w-[200px]">
-          <CheckboxGroup label="Marca" value={selectedMarcas} onValueChange={(values) => onMarcasChange(values as string[])}>
-            {marcas.map((marca) => (
-              <Checkbox key={marca} value={marca}>
-                {marca}
-              </Checkbox>
-            ))}
-          </CheckboxGroup>
-        </ScrollShadow>
+          <AccordionItem key={2} aria-label="Filtrar por marca" title="Marca" indicator={<GrProjects />}>
+            <ScrollShadow hideScrollBar className="h-48 xl:h-[300px] min-w-[140px] sm:min-w-[200px]">
+              <CheckboxGroup value={selectedMarcas} onValueChange={(values) => onMarcasChange(values as string[])}>
+                {marcas.map((marca) => (
+                  <Checkbox key={marca} value={marca}>
+                    {marca}
+                  </Checkbox>
+                ))}
+              </CheckboxGroup>
+            </ScrollShadow>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );
