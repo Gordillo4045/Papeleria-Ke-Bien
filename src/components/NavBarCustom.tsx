@@ -12,7 +12,7 @@ interface NavbarProps {
 }
 
 const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => {
-  const { cart } = useCart(); // Obtener el carrito del contexto
+  const { cart } = useCart();
 
   const [isCartModalOpen, setcartModalOpen] = useState(false);
   const totalProductos = cart.reduce((total, producto) => total + producto.cantidad, 0);
