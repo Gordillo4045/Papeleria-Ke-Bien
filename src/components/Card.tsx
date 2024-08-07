@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { Card, CardBody, CardFooter, Image, useDisclosure } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image, Input, Popover, PopoverContent, PopoverTrigger, Spacer, useDisclosure } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
+import { useCart } from './CartContext';
+import { FaCartPlus } from "react-icons/fa6";
+import { toast } from 'sonner';
+import { MdShoppingCartCheckout } from 'react-icons/md';
 
 interface ProductCardProps {
   id: string;
@@ -10,15 +14,30 @@ interface ProductCardProps {
   precio: number;
   imagen: string;
   existencias: string;
+  onOpenCart: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, marca, modelo, existencias }) => {
+
+const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, marca, modelo, existencias, onOpenCart }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedProduct, setSelectedProduct] = useState<ProductCardProps | null>(null);
+  const { addToCart } = useCart();
+  const [cantidad, setCantidad] = useState(1);
 
   const handleOpen = () => {
-    setSelectedProduct({ id, nombre, marca, modelo, precio, imagen, existencias });
+    setSelectedProduct({ id, nombre, marca, modelo, precio, imagen, existencias, onOpenCart });
     onOpen();
+  };
+
+  const handleAddToCart = () => {
+    addToCart({ id, nombre, marca, modelo, precio, imagen, existencias, cantidad });
+    toast.success("Producto agregado al carrito", {
+      icon: < MdShoppingCartCheckout />,
+      cancel: <Spacer x={6} />,
+      action: <Button onPress={onOpenCart} size='sm' radius='md' variant='light' color='primary' >Ver carrito</Button>,
+
+    });
+    onOpenChange();
   };
 
   return (
@@ -74,9 +93,36 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cerrar
                 </Button>
-                <Button color="primary" isDisabled onPress={onClose}>
-                  Comprar
-                </Button>
+                <Popover placement="bottom" showArrow >
+                  <PopoverTrigger>
+                    <Button color="primary">
+                      Comprar
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[120px]">
+                    {(titleProps) => (
+                      <div className="px-1 py-2 w-full">
+                        <p className="text-small font-bold text-foreground" {...titleProps}>
+                          Cantidad
+                        </p>
+                        <div className="mt-2 flex gap-2 w-full">
+                          <Input
+                            defaultValue="1"
+                            type="number"
+                            size="sm"
+                            variant="underlined"
+                            autoFocus
+                            onChange={(e) => setCantidad(parseInt(e.target.value))}
+                          />
+                          <Button color="primary" variant='light' isIconOnly onPress={handleAddToCart}>
+                            <FaCartPlus size={20} />
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </PopoverContent>
+                </Popover>
+
               </ModalFooter>
             </>
           )}

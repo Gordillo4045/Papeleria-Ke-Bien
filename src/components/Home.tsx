@@ -11,6 +11,7 @@ import CustomNavbar from "./NavBarCustom";
 import { MdFilterAlt } from "react-icons/md";
 //@ts-ignore
 import { SearchIcon } from "../assets/SearchIcon"
+import CartModal from "./CartModal";
 
 interface Product {
     id: string;
@@ -30,6 +31,7 @@ const Home: React.FC = () => {
     const [selectedMarcas, setSelectedMarcas] = useState<string[]>([]);
     const [selectedProductos, setSelectedProductos] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
     const handleResize = () => {
         const screenWidth = window.innerWidth;
@@ -124,6 +126,14 @@ const Home: React.FC = () => {
         };
     }, []);
 
+    const handleOpenCart = () => {
+        setIsCartOpen(true);
+    };
+
+    const handleCloseCart = () => {
+        setIsCartOpen(false);
+    };
+
     return (
         <div className="container min-h-screen md:mx-auto">
             <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm} />
@@ -159,7 +169,7 @@ const Home: React.FC = () => {
                                     animate={{ x: 0, opacity: 1 }}
                                     exit={{ x: "-100%", opacity: 0 }}
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                    className={`${window.innerWidth < 1024 ? "fixed top-0 left-0 h-full w-[65%] p-2 rounded-r-md bg-white z-50 overflow-y-auto" : ""} lg:block`}
+                                    className={`${window.innerWidth < 1024 ? "fixed top-0 left-0 h-full w-[65%] p-2 rounded-r-md bg-white z-50 overflow-y-auto dark:bg-black" : ""} lg:block`}
                                 >
                                     <Filters
                                         precioRange={precioRange}
@@ -179,11 +189,12 @@ const Home: React.FC = () => {
                 </div>
                 <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
                     {currentItems.length === 0 ? (
-                        <div className="text-center text-gray-500 mt-8">
+                        <div className="text-center text-gray-500 mt-8 pointer-events-none">
                             No se encontraron productos con los filtros seleccionados.
                         </div>
                     ) : (
                         <>
+                            <CartModal isOpen={isCartOpen} onClose={handleCloseCart} />
                             <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                                 {currentItems.map((item) => (
                                     <ProductCard
@@ -195,6 +206,7 @@ const Home: React.FC = () => {
                                         marca={item.marca}
                                         modelo={item.modelo}
                                         existencias={item.existencias}
+                                        onOpenCart={handleOpenCart}
                                     />
                                 ))}
                             </div>
