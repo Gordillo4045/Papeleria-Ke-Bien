@@ -19,6 +19,7 @@ interface ProductFormProps {
     isOpen: boolean;
     onClose: () => void;
     editProduct?: Producto | null;
+    onUpdate: () => void;
 }
 
 interface FormData {
@@ -40,7 +41,7 @@ interface Producto {
     existencias: string;
 }
 
-export default function ProductForm({ isOpen, onClose, editProduct }: ProductFormProps) {
+export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: ProductFormProps) {
     const [formData, setFormData] = useState<FormData>({
         nombre: "",
         marca: "",
@@ -50,7 +51,7 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
         existencias: "",
     });
 
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null); // Estado para la previsualización
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     useEffect(() => {
         if (editProduct) {
@@ -62,7 +63,7 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
                 imagen: null,
                 existencias: editProduct.existencias,
             });
-            setPreviewUrl(editProduct.imagen); // Mostrar la imagen existente
+            setPreviewUrl(editProduct.imagen);
         } else {
             setFormData({
                 nombre: "",
@@ -72,7 +73,7 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
                 imagen: null,
                 existencias: "",
             });
-            setPreviewUrl(null); // Limpiar la previsualización
+            setPreviewUrl(null);
         }
     }, [editProduct]);
 
@@ -98,6 +99,38 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
         setPreviewUrl(null);
     };
 
+    const processProduct = async () => {
+        let imageUrl = editProduct?.imagen || "";
+
+        if (formData.imagen) {
+            const storageRef = ref(storage, `imagenes/${formData.imagen.name}`);
+            await uploadBytes(storageRef, formData.imagen);
+            imageUrl = await getDownloadURL(storageRef);
+        }
+
+        const productosCollection = collection(db, "productos");
+
+        if (editProduct) {
+            await updateDoc(doc(productosCollection, editProduct.id), {
+                nombre: formData.nombre,
+                marca: formData.marca,
+                modelo: formData.modelo,
+                precio: parseFloat(formData.precio),
+                imagen: imageUrl,
+                existencias: parseInt(formData.existencias),
+            });
+        } else {
+            await addDoc(productosCollection, {
+                nombre: formData.nombre,
+                marca: formData.marca,
+                modelo: formData.modelo,
+                precio: parseFloat(formData.precio),
+                imagen: imageUrl,
+                existencias: parseInt(formData.existencias),
+            });
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -112,45 +145,24 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
         }
 
         try {
-            let imageUrl = editProduct?.imagen || "";
-
-            if (formData.imagen) {
-                const storageRef = ref(storage, `imagenes/${formData.imagen.name}`);
-                await uploadBytes(storageRef, formData.imagen);
-                imageUrl = await getDownloadURL(storageRef);
-            }
-
-            const productosCollection = collection(db, "productos");
-
-            if (editProduct) {
-                await updateDoc(doc(productosCollection, editProduct.id), {
-                    nombre: formData.nombre,
-                    marca: formData.marca,
-                    modelo: formData.modelo,
-                    precio: parseFloat(formData.precio),
-                    imagen: imageUrl,
-                    existencias: parseInt(formData.existencias),
-                });
-                toast.success("Producto actualizado correctamente");
-            } else {
-                await addDoc(productosCollection, {
-                    nombre: formData.nombre,
-                    marca: formData.marca,
-                    modelo: formData.modelo,
-                    precio: parseFloat(formData.precio),
-                    imagen: imageUrl,
-                    existencias: parseInt(formData.existencias),
-                });
-                toast.success("Producto agregado correctamente");
-            }
-
+            toast.promise(
+                processProduct(),
+                {
+                    loading: 'Procesando producto...',
+                    success: () => {
+                        const successMessage = editProduct ? 'Producto actualizado correctamente' : 'Producto agregado correctamente';
+                        onUpdate();
+                        return successMessage;
+                    },
+                    error: 'Error al procesar el producto. Por favor, inténtalo de nuevo.',
+                }
+            );
             onClose();
+
         } catch (error) {
-            console.error("Error al procesar el producto:", error);
-            toast.error("Error al procesar el producto. Por favor, inténtalo de nuevo.");
+
         }
     };
-
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} placement="top-center" scrollBehavior='inside'>

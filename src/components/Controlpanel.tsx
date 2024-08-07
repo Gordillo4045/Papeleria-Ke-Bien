@@ -151,6 +151,7 @@ export default function App() {
                     isOpen={isProductFormOpen}
                     onClose={handleProductFormClose}
                     editProduct={editProducto}
+                    onUpdate={obtenerProductos}
                 />
 
                 {isLoggedIn && (
