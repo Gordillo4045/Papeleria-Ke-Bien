@@ -13,23 +13,30 @@ interface ProductCardProps {
   precio: number;
   imagen: string;
   existencias: string;
+  onOpenCart: () => void;
 }
 
 
-const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, marca, modelo, existencias }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, marca, modelo, existencias, onOpenCart }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedProduct, setSelectedProduct] = useState<ProductCardProps | null>(null);
   const { addToCart } = useCart();
   const [cantidad, setCantidad] = useState(1);
 
   const handleOpen = () => {
-    setSelectedProduct({ id, nombre, marca, modelo, precio, imagen, existencias });
+    setSelectedProduct({ id, nombre, marca, modelo, precio, imagen, existencias, onOpenCart });
     onOpen();
   };
 
   const handleAddToCart = () => {
     addToCart({ id, nombre, marca, modelo, precio, imagen, existencias, cantidad });
-    toast.success("Producto agregado al carrito ")
+    toast.success("Producto agregado al carrito", {
+      action: {
+        label: 'Ver carrito',
+        onClick: onOpenCart
+      },
+    });
+    onOpenChange();
   };
 
   return (

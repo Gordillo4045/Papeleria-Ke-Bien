@@ -222,7 +222,7 @@ export default function ProductForm({ isOpen, onClose, editProduct }: ProductFor
                         )}
                         {previewUrl && (
                             <div className="relative flex justify-center items-center">
-                                <Image src={previewUrl} isBlurred isZoomed alt="Vista previa" className="rounded-md max-w-full max-h-36" />
+                                <Image src={previewUrl} isBlurred isZoomed alt="Vista previa" className="rounded-md max-w-full max-h-36 bg-white" />
                                 <Tooltip content="Eliminar imagen" color='danger' showArrow={true}>
                                     <Button
                                         type="button"

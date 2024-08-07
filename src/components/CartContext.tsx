@@ -16,6 +16,7 @@ interface CartContextProps {
     addToCart: (product: Product) => void;
     removeFromCart: (id: string) => void;
     clearCart: () => void;
+    updateQuantity: (id: string, newQuantity: number) => void;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
@@ -25,17 +26,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const addToCart = (newProduct: Product) => {
         setCart((prevCart) => {
-            // Buscar si el producto ya está en el carrito
             const existingProduct = prevCart.find(item => item.id === newProduct.id);
             if (existingProduct) {
-                // Actualizar la cantidad si el producto ya está en el carrito
                 return prevCart.map(item =>
                     item.id === newProduct.id
                         ? { ...item, cantidad: item.cantidad + newProduct.cantidad }
                         : item
                 );
             } else {
-                // Agregar el nuevo producto al carrito
                 return [...prevCart, newProduct];
             }
         });
@@ -49,8 +47,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setCart([]);
     };
 
+    const updateQuantity = (id: string, newQuantity: number) => {
+        setCart((prevCart) =>
+            prevCart.map(item =>
+                item.id === id ? { ...item, cantidad: newQuantity } : item
+            )
+        );
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, updateQuantity }}>
             {children}
         </CartContext.Provider>
     );
