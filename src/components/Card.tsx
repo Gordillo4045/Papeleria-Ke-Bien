@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Card, CardBody, CardFooter, Image, Input, Popover, PopoverContent, PopoverTrigger, useDisclosure } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image, Input, Popover, PopoverContent, PopoverTrigger, Spacer, useDisclosure } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
 import { useCart } from './CartContext';
 import { FaCartPlus } from "react-icons/fa6";
 import { toast } from 'sonner';
+import { MdShoppingCartCheckout } from 'react-icons/md';
 
 interface ProductCardProps {
   id: string;
@@ -31,10 +32,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
   const handleAddToCart = () => {
     addToCart({ id, nombre, marca, modelo, precio, imagen, existencias, cantidad });
     toast.success("Producto agregado al carrito", {
-      action: {
-        label: 'Ver carrito',
-        onClick: onOpenCart
-      },
+      icon: < MdShoppingCartCheckout />,
+      cancel: <Spacer x={6} />,
+      action: <Button onPress={onOpenCart} size='sm' radius='md' variant='light' color='primary' >Ver carrito</Button>,
+
     });
     onOpenChange();
   };

@@ -58,7 +58,7 @@ const Filters: React.FC<FiltersProps> = ({
           Filtrar por
         </span>
         <div className="flex gap-2">
-          <Tooltip showArrow={true} content="Borrar filtros" offset={2}>
+          <Tooltip showArrow={true} content="Borrar filtros" offset={2} color="foreground">
             <Button onClick={onResetFilters} isIconOnly size="sm" color="default" variant="light">
               <MdFilterAltOff size={"1.2rem"} />
             </Button>
