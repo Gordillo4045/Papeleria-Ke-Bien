@@ -29,7 +29,7 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
     <>
       <Navbar shouldHideOnScroll >
         <NavbarBrand>
-          <p className="font-bold text-xl text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl mr-5">Papeleria Ke Bien</p>
+          <p className="font-bold text-lg text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl mr-4 lg:mr-5">Papeleria Ke Bien</p>
           <ThemeToggle />
         </NavbarBrand>
         <NavbarContent as="div" className="items-center w-full hidden lg:flex " justify="center">
