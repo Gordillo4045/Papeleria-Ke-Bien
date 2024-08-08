@@ -1,6 +1,6 @@
 import { BiSolidTrashAlt } from 'react-icons/bi';
 import { useCart } from './CartContext';
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, Card, CardBody, CardHeader, ModalFooter, ButtonGroup } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Button, Card, CardBody, CardHeader, ModalFooter, ButtonGroup, Image } from "@nextui-org/react";
 import { FiMinus, FiPlus } from 'react-icons/fi';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -43,7 +43,7 @@ const CartModal = ({ isOpen, onClose }: ModalProps) => {
             <ModalContent>
                 <ModalHeader>Carrito de Compras</ModalHeader>
                 <ModalBody>
-                    <AnimatePresence>
+                    <AnimatePresence mode="popLayout">
                         <div className="min-h-20 overflow-auto">
                             {cart.length === 0 ? (
                                 <p className='text-sm text-center align-middle mt-6 text-gray-500 pointer-events-none'>No hay productos en el carrito</p>
@@ -52,19 +52,31 @@ const CartModal = ({ isOpen, onClose }: ModalProps) => {
                                     <motion.div
                                         key={product.id}
                                         className='flex gap-7 justify-between items-center py-2'
-                                        initial={{ x: "-100%", opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        exit={{ x: "-100%", opacity: 0 }}
-                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{
+                                            opacity: { duration: 0.2 },
+                                            height: { duration: 0.3 }
+                                        }}
                                         layout
                                     >
+                                        <Image src={product.imagen} className='size-11 hidden md:inline' isZoomed radius='sm' removeWrapper />
                                         <p className='flex-grow  '>{product.nombre} {product.marca} </p>
                                         <div className="flex items-center justify-between ">
                                             <div className="flex items-center">
                                                 <button onClick={() => updateQuantity(product.id, Math.max(1, product.cantidad - 1))} className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                                     <FiMinus />
                                                 </button>
-                                                <input type="text" className="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" value={product.cantidad} readOnly />
+                                                <motion.div
+                                                    key={product.cantidad}
+                                                    initial={{ scale: 0.8, opacity: 0.3 }}
+                                                    animate={{ scale: 1, opacity: 1 }}
+                                                    exit={{ scale: 0.8, opacity: 0.3 }}
+                                                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                                                >
+                                                    <input type="text" className="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" value={product.cantidad} readOnly />
+                                                </motion.div>
                                                 <button onClick={() => updateQuantity(product.id, product.cantidad + 1)} className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                                     <FiPlus />
                                                 </button>
@@ -102,7 +114,7 @@ const CartModal = ({ isOpen, onClose }: ModalProps) => {
                 <ModalFooter>
                     <ButtonGroup>
                         <Button color='primary' isDisabled>Comprar</Button>
-                        <Button color="danger" variant="light" onPress={onClose}>Salir</Button>
+                        <Button color="danger" variant="light" onPress={onClose}>Seguir comprando</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </ModalContent>
