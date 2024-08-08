@@ -135,7 +135,7 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div className="container min-h-screen md:mx-auto">
+        <div className="container min-h-screen md:mx-auto grid grid-rows-[auto_1fr_auto] ">
             <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm} />
             <div className="flex flex-col lg:flex-row">
                 <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex flex-col">
@@ -187,41 +187,46 @@ const Home: React.FC = () => {
                         )}
                     </AnimatePresence>
                 </div>
-                <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl ">
+                <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl min-h-full ">
                     {currentItems.length === 0 ? (
-                        <div className="text-center text-gray-500 mt-8 pointer-events-none">
+                        <div className=" flex items-center justify-center align-middle min-h-full text-sm text-center text-gray-500 pointer-events-none">
                             No se encontraron productos con los filtros seleccionados.
                         </div>
                     ) : (
                         <>
                             <CartModal isOpen={isCartOpen} onClose={handleCloseCart} />
-                            <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                                {currentItems.map((item) => (
-                                    <ProductCard
-                                        key={item.id}
-                                        id={item.id}
-                                        nombre={item.nombre}
-                                        precio={item.precio}
-                                        imagen={item.imagen}
-                                        marca={item.marca}
-                                        modelo={item.modelo}
-                                        existencias={item.existencias}
-                                        onOpenCart={handleOpenCart}
+                            <div className="grid grid-rows-[auto_1fr] min-h-full">
+                                <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4">
+                                    {currentItems.map((item) => (
+                                        <ProductCard
+                                            key={item.id}
+                                            id={item.id}
+                                            nombre={item.nombre}
+                                            precio={item.precio}
+                                            imagen={item.imagen}
+                                            marca={item.marca}
+                                            modelo={item.modelo}
+                                            existencias={item.existencias}
+                                            onOpenCart={handleOpenCart}
+                                        />
+                                    ))}
+                                </div>
+                                <div className="flex justify-center lg:items-end">
+                                    <Pagination
+                                        total={totalPages}
+                                        initialPage={currentPage}
+                                        page={currentPage}
+                                        variant={"light"}
+                                        onChange={paginate}
+                                        color="default"
+                                        classNames={{
+                                            cursor: "bg-foreground text-background",
+                                        }}
+                                        showControls
+                                        loop
+                                        showShadow
                                     />
-                                ))}
-                            </div>
-                            <div className="flex justify-center">
-                                <Pagination
-                                    total={totalPages}
-                                    initialPage={currentPage}
-                                    page={currentPage}
-                                    variant={"light"}
-                                    onChange={paginate}
-                                    color="default"
-                                    classNames={{
-                                        cursor: "bg-foreground text-background",
-                                    }}
-                                />
+                                </div>
                             </div>
                         </>
                     )}
