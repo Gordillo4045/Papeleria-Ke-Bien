@@ -48,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
           />
         </CardBody>
         <CardFooter className="text-small justify-between flex flex-wrap flex-grow text-start">
-          <b className="my-0 py-0 ">{nombre} {marca} {modelo}</b>
+          <b className="my-0 py-0 w-full ">{nombre} {marca} {modelo}</b>
           <p className="text-default-500 ">{`$${precio.toFixed(2)}`}</p>
           <Button color="primary" variant='light' isIconOnly onPress={handleAddToCart}>
             <FaCartPlus size={15} />
