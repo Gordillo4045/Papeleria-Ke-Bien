@@ -1,4 +1,4 @@
-import { Navbar, NavbarContent, NavbarBrand, Button, Badge } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarBrand, Button, Badge, Link } from "@nextui-org/react";
 import SearchInput from "./SearchInput";
 import { useCart } from "./CartContext";
 import { useState } from "react";
@@ -29,7 +29,9 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
     <>
       <Navbar shouldHideOnScroll >
         <NavbarBrand>
-          <p className="font-bold text-lg text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl mr-4 lg:mr-5">Papeleria Ke Bien</p>
+          <Link href="/" color="foreground" >
+            <p className="font-bold text-lg text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
+          </Link>
           <ThemeToggle />
         </NavbarBrand>
         <NavbarContent as="div" className="items-center w-full hidden lg:flex " justify="center">
