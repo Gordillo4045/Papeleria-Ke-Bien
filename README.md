@@ -1,7 +1,7 @@
- # Papeleria ke bien
+# Papeleria ke bien
 Un catalogo web hecho con React, TypeScript, FireBase, Tailwind y Vite.
 
-**Aquí tienes la aplicación desplegada en producción:100::** 
+**Aquí tienes la aplicación desplegada en producción 💯** 
 
 - https://papeleria-ke-bien.web.app/.
 
