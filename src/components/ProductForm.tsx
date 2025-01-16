@@ -9,7 +9,7 @@ import {
     ButtonGroup,
     Image,
     Tooltip
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../Config/Config";

@@ -1,6 +1,6 @@
 import { BiSolidTrashAlt } from 'react-icons/bi';
 import { useCart } from './CartContext';
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, Card, CardBody, CardHeader, ModalFooter, ButtonGroup, Image } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Button, Card, CardBody, CardHeader, ModalFooter, ButtonGroup, Image } from "@heroui/react";
 import { FiMinus, FiPlus } from 'react-icons/fi';
 import { AnimatePresence, motion } from 'framer-motion';
 

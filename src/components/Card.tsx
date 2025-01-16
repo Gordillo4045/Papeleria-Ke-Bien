@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ButtonGroup, Card, CardBody, CardFooter, Image, Input, Spacer, useDisclosure } from "@nextui-org/react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
+import { ButtonGroup, Card, CardBody, CardFooter, Image, Input, Spacer, useDisclosure } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@heroui/react";
 import { useCart } from './CartContext';
 import { FaCartPlus } from "react-icons/fa6";
 import { toast } from 'sonner';

@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-import { Button, Card, CardBody, Pagination } from "@nextui-org/react";
+import { Button, Card, CardBody, Pagination } from "@heroui/react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import Filters from "./Filter";

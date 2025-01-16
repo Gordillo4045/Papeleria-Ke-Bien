@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useTheme } from './useTheme';
-import { Tooltip } from '@nextui-org/react';
+import { Tooltip } from "@heroui/react";
 
 const ThemeToggle = () => {
     const { theme, toggleTheme } = useTheme();

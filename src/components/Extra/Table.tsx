@@ -21,7 +21,7 @@ import {
     NavbarItem,
     Link,
     ButtonGroup,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { FaPlus } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";

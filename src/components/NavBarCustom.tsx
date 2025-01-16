@@ -1,4 +1,4 @@
-import { Navbar, NavbarContent, NavbarBrand, Button, Badge, Link } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarBrand, Button, Badge, Link } from "@heroui/react";
 import SearchInput from "./SearchInput";
 import { useCart } from "./CartContext";
 import { useState } from "react";

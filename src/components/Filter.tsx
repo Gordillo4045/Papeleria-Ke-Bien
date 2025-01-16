@@ -1,4 +1,4 @@
-import { Slider, CheckboxGroup, Checkbox, ScrollShadow, Button, Tooltip, Accordion, AccordionItem } from "@nextui-org/react";
+import { Slider, CheckboxGroup, Checkbox, ScrollShadow, Button, Tooltip, Accordion, AccordionItem } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { db } from "../Config/Config";
 import { collection, getDocs } from "firebase/firestore";

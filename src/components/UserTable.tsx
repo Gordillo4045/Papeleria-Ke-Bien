@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from "react";
 import {
     Table,
     TableHeader,
@@ -18,32 +18,28 @@ import { FaPlus } from "react-icons/fa6";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BiSolidTrashAlt } from "react-icons/bi";
 
-interface Producto {
+interface User {
     id: string;
-    nombre: string;
-    marca: string;
-    modelo: string;
-    precio: number;
-    imagen: string;
-    existencias: string;
+    email: string;
+    displayName: string;
 }
 
-interface ProductTableProps {
-    productos: Producto[];
+interface UserTableProps {
+    users: User[];
     onAddNew: () => void;
-    onEdit: (producto: Producto) => void;
-    onDelete: (producto: Producto) => void;
+    onEdit: (user: User) => void;
+    onDelete: (user: User) => void;
     onRefresh: () => void;
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["nombre", "marca", "modelo", "precio", "existencias", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["email", "displayName", "actions"];
 
-export default function ProductTable({ productos, onAddNew, onEdit, onDelete, onRefresh }: ProductTableProps) {
+export default function UserTable({ users, onAddNew, onEdit, onDelete, onRefresh }: UserTableProps) {
     const [filterValue, setFilterValue] = useState("");
     const [visibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
     visibleColumns;
     const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-        column: "nombre",
+        column: "displayName",
         direction: "ascending",
     });
     const [page, setPage] = useState(1);
@@ -52,31 +48,27 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
     const hasSearchFilter = Boolean(filterValue);
 
     const headerColumns = useMemo(() => [
-        { uid: "nombre", name: "Nombre" },
-        { uid: "marca", name: "Marca" },
-        { uid: "modelo", name: "Modelo" },
-        { uid: "precio", name: "Precio" },
-        { uid: "existencias", name: "Existencias" },
+        { uid: "email", name: "Correo Electrónico" },
+        { uid: "displayName", name: "Nombre" },
         { uid: "actions", name: "Acciones" },
     ], []);
 
     const filteredItems = useMemo(() => {
-        let filteredProducts = [...productos];
+        let filteredUsers = [...users];
 
         if (hasSearchFilter) {
-            filteredProducts = filteredProducts.filter((product) =>
-                product.nombre.toLowerCase().includes(filterValue.toLowerCase()) ||
-                product.marca.toLowerCase().includes(filterValue.toLowerCase()) ||
-                product.modelo.toLowerCase().includes(filterValue.toLowerCase())
+            filteredUsers = filteredUsers.filter((user) =>
+                user.email.toLowerCase().includes(filterValue.toLowerCase()) ||
+                user.displayName.toLowerCase().includes(filterValue.toLowerCase())
             );
         }
-        return filteredProducts;
-    }, [productos, filterValue]);
+        return filteredUsers;
+    }, [users, filterValue]);
 
     const sortedItems = useMemo(() => {
         return [...filteredItems].sort((a, b) => {
-            const first = a[sortDescriptor.column as keyof Producto];
-            const second = b[sortDescriptor.column as keyof Producto];
+            const first = a[sortDescriptor.column as keyof User];
+            const second = b[sortDescriptor.column as keyof User];
             const cmp = first < second ? -1 : first > second ? 1 : 0;
 
             return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -90,16 +82,11 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
         return sortedItems.slice(start, end);
     }, [page, sortedItems]);
 
-    const renderCell = (product: Producto, columnKey: React.Key) => {
+    const renderCell = (user: User, columnKey: React.Key) => {
         switch (columnKey) {
-            case "nombre":
-            case "marca":
-            case "modelo":
-                return <span>{product[columnKey as keyof Producto]}</span>;
-            case "precio":
-                return <span>${product.precio.toFixed(2)}</span>;
-            case "existencias":
-                return <span>{product.existencias}</span>;
+            case "email":
+            case "displayName":
+                return <span>{user[columnKey as keyof User]}</span>;
             case "actions":
                 return (
                     <div className="flex justify-start gap-2">
@@ -108,7 +95,7 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
                                 isIconOnly
                                 size="sm"
                                 variant="light"
-                                onPress={() => onEdit(product)}
+                                onPress={() => onEdit(user)}
                             >
                                 <AiOutlineEdit size={20} />
                             </Button>
@@ -119,7 +106,7 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
                                 size="sm"
                                 color="danger"
                                 variant="light"
-                                onPress={() => onDelete(product)}
+                                onPress={() => onDelete(user)}
                             >
                                 <BiSolidTrashAlt size={20} />
                             </Button>
@@ -150,7 +137,7 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
                             base: "w-full sm:max-w-[44%]",
                             inputWrapper: "border-1",
                         }}
-                        placeholder="Buscar por nombre, marca o modelo"
+                        placeholder="Buscar por correo o nombre"
                         size="sm"
                         startContent={<IoIosSearch className="text-default-300" />}
                         value={filterValue}
@@ -175,7 +162,7 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
                             endContent={<FaPlus />}
                             onPress={onAddNew}
                         >
-                            Agregar Producto
+                            Agregar Usuario
                         </Button>
                     </div>
                 </div>
@@ -192,14 +179,14 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
                     }}
                     color="default"
                     page={page}
-                    total={productos.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1}
+                    total={users.length > 0 ? Math.ceil(filteredItems.length / rowsPerPage) : 1}
                     variant="light"
                     onChange={setPage}
                     initialPage={page}
                     isCompact
                 />
                 <span className="text-[0.7rem] md:text-small text-default-400">
-                    {`${items.length} de ${filteredItems.length} productos`}
+                    {`${items.length} de ${filteredItems.length} usuarios`}
                 </span>
             </div>
         );
@@ -207,7 +194,7 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
 
     return (
         <Table
-            aria-label="Tabla de productos"
+            aria-label="Tabla de usuarios"
             isHeaderSticky
             isCompact
             bottomContent={bottomContent}
@@ -231,7 +218,7 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
                     </TableColumn>
                 )}
             </TableHeader>
-            <TableBody items={items} emptyContent={"No se encontraron productos"}>
+            <TableBody items={items} emptyContent={"No se encontraron usuarios"}>
                 {(item) => (
                     <TableRow key={item.id}>
                         {(columnKey) => <TableCell className="md:min-w-[110px]">{renderCell(item, columnKey)}</TableCell>}

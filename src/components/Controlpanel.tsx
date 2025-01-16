@@ -6,7 +6,7 @@ import {
     NavbarItem,
     Button,
     Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { IoHome, IoExitOutline } from "react-icons/io5";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";

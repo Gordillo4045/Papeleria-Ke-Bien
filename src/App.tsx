@@ -3,7 +3,7 @@ import Home from './components/Home';
 import ErrorPage from './components/ErrorPage';
 import ProductsTable from './components/Controlpanel';
 import { Toaster } from "sonner";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import { CartProvider } from "./components/CartContext";
 import ThemeProvider from "./components/ThemeProvider";
 import { useTheme } from "./components/useTheme";
@@ -28,11 +28,11 @@ function AppContent() {
 function App() {
   return (
     <ThemeProvider>
-      <NextUIProvider>
+      <HeroUIProvider>
         <CartProvider>
           <AppContent />
         </CartProvider>
-      </NextUIProvider>
+      </HeroUIProvider>
     </ThemeProvider>
   );
 }
