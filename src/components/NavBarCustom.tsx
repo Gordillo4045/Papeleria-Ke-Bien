@@ -27,7 +27,7 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
 
   return (
     <>
-      <Navbar shouldHideOnScroll >
+      <Navbar  >
         <NavbarBrand>
           <Link href="/" color="foreground" >
             <p className="font-bold text-lg text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
