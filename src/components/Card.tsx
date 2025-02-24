@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { ButtonGroup, Card, CardBody, CardFooter, Image, Input, Spacer, useDisclosure } from "@heroui/react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@heroui/react";
+import { Button, ButtonGroup, Card, CardBody, CardFooter, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Image, NumberInput, Spacer, useDisclosure } from "@heroui/react";
 import { useCart } from './CartContext';
 import { FaCartPlus } from "react-icons/fa6";
 import { toast } from 'sonner';
@@ -25,46 +24,38 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
   const handleAddToCart = () => {
     const maxStock = parseInt(existencias);
     if (cantidad > maxStock) {
-        toast.error(`Solo hay ${maxStock} unidades disponibles`);
-        setCantidad(maxStock);
-        return;
+      toast.error(`Solo hay ${maxStock} unidades disponibles`);
+      setCantidad(maxStock);
+      return;
     }
 
     addToCart({ id, nombre, marca, modelo, precio, imagen, existencias, cantidad });
     toast.success("Producto agregado al carrito", {
-        icon: <MdShoppingCartCheckout />,
-        cancel: <Spacer x={6} />,
-        action: <Button onPress={onOpenCart} size='sm' radius='md' variant='light' color='primary'>Ver carrito</Button>,
+      icon: <MdShoppingCartCheckout />,
+      cancel: <Spacer x={6} />,
+      action: <Button onPress={onOpenCart} size='sm' radius='md' variant='light' color='primary'>Ver carrito</Button>,
     });
     setCantidad(1);
     onClose();
   };
 
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (isNaN(value) || value < 1) {
-      setCantidad(1);
-    } else if (value > parseInt(existencias)) {
-      setCantidad(parseInt(existencias));
+
+  const handleQuantityChange = (value: number) => {
+    const maxStock = parseInt(existencias);
+
+    if (value > maxStock) {
+      setCantidad(maxStock);
     } else {
       setCantidad(value);
     }
   };
 
-  // Reset cantidad when modal opens
-  const handleModalOpen = () => {
-    setCantidad(1);
-    onOpen();
-  };
-
   return (
     <>
-      <Card className="w-10/12 mb-4 min-h-[245px]" shadow="sm" key={id} isPressable onPress={handleModalOpen} fullWidth={true} >
+      <Card className="w-10/12 mb-4 min-h-[245px]" shadow="sm" key={id} isPressable onPress={onOpen} fullWidth={true} >
         <CardBody className="overflow-visible p-0 flex flex-initial bg-white">
           <Image
             isZoomed
-            shadow="sm"
-            radius="lg"
             width="100%"
             alt={nombre}
             className="w-full object-contain h-[140px]"
@@ -74,30 +65,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
         <CardFooter className="text-small justify-between flex flex-wrap flex-grow text-start">
           <b className="my-0 py-0 w-full ">{nombre} {marca} {modelo}</b>
           <p className="text-default-500 ">{`$${precio.toFixed(2)}`}</p>
-          <Button color="primary" variant='light' isIconOnly onPress={handleModalOpen}>
+          <Button color="primary" variant='light' isIconOnly onPress={onOpen}>
             <FaCartPlus size={15} />
           </Button>
         </CardFooter>
       </Card>
 
       {isOpen && (
-        <Modal
-          placement='center'
+        <Drawer
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           scrollBehavior='inside'
-          motionProps={{
-            variants: {
-              enter: { opacity: 1, y: 0 },
-              exit: { opacity: 0, y: 20 }
-            },
-            transition: { duration: 0.3 }
-          }}
+
         >
-          <ModalContent>
+          <DrawerContent>
             {(onClose) => (
               <>
-                <ModalHeader className="flex flex-col gap-1">
+                <DrawerHeader className="flex flex-col gap-1">
                   <div className="text-xl font-semibold">{nombre}</div>
                   <div className="font-normal text-base">
                     <span>Marca: </span>
@@ -105,8 +89,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                   <div className="font-normal text-base">
                     <span>Modelo: </span>
                     {modelo}</div>
-                </ModalHeader>
-                <ModalBody>
+                </DrawerHeader>
+                <DrawerBody>
 
                   <Image
                     isBlurred
@@ -115,7 +99,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                     radius="lg"
                     width="100%"
                     alt={nombre}
-                    className="max-h-screen"
                     src={imagen}
                   />
                   <div className="flex flex-col gap-2">
@@ -128,17 +111,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                       {`Existencias: ${existencias} piezas`}
                     </span>
                   </div>
-                </ModalBody>
-                <ModalFooter>
+                </DrawerBody>
+                <DrawerFooter>
                   <div className="flex items-center justify-center gap-4">
                     <span className='font-light text-sm'>Cantidad</span>
-                    <Input
-                      type="number"
+                    <NumberInput
                       variant='underlined'
-                      value={cantidad.toString()}
-                      min="1"
-                      max={existencias}
-                      onChange={handleQuantityChange}
+                      value={cantidad}
+                      min={1}
+                      size='sm'
+                      maxValue={parseInt(existencias)}
+                      minValue={1}
+                      onValueChange={handleQuantityChange}
+
                     />
                     <ButtonGroup>
                       <Button color="primary" onPress={handleAddToCart}>
@@ -149,11 +134,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                       </Button>
                     </ButtonGroup>
                   </div>
-                </ModalFooter>
+                </DrawerFooter>
               </>
             )}
-          </ModalContent>
-        </Modal>
+          </DrawerContent>
+        </Drawer>
       )}
     </>
   );
