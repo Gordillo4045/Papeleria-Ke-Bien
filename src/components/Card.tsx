@@ -23,19 +23,43 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
   const { addToCart } = useCart();
 
   const handleAddToCart = () => {
+    const maxStock = parseInt(existencias);
+    if (cantidad > maxStock) {
+        toast.error(`Solo hay ${maxStock} unidades disponibles`);
+        setCantidad(maxStock);
+        return;
+    }
+
     addToCart({ id, nombre, marca, modelo, precio, imagen, existencias, cantidad });
     toast.success("Producto agregado al carrito", {
-      icon: <MdShoppingCartCheckout />,
-      cancel: <Spacer x={6} />,
-      action: <Button onPress={onOpenCart} size='sm' radius='md' variant='light' color='primary'>Ver carrito</Button>,
+        icon: <MdShoppingCartCheckout />,
+        cancel: <Spacer x={6} />,
+        action: <Button onPress={onOpenCart} size='sm' radius='md' variant='light' color='primary'>Ver carrito</Button>,
     });
+    setCantidad(1);
     onClose();
+  };
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (isNaN(value) || value < 1) {
+      setCantidad(1);
+    } else if (value > parseInt(existencias)) {
+      setCantidad(parseInt(existencias));
+    } else {
+      setCantidad(value);
+    }
+  };
+
+  // Reset cantidad when modal opens
+  const handleModalOpen = () => {
+    setCantidad(1);
+    onOpen();
   };
 
   return (
     <>
-
-      <Card className="w-10/12 mb-4 min-h-[245px]" shadow="sm" key={id} isPressable onPress={onOpen} fullWidth={true} >
+      <Card className="w-10/12 mb-4 min-h-[245px]" shadow="sm" key={id} isPressable onPress={handleModalOpen} fullWidth={true} >
         <CardBody className="overflow-visible p-0 flex flex-initial bg-white">
           <Image
             isZoomed
@@ -50,11 +74,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
         <CardFooter className="text-small justify-between flex flex-wrap flex-grow text-start">
           <b className="my-0 py-0 w-full ">{nombre} {marca} {modelo}</b>
           <p className="text-default-500 ">{`$${precio.toFixed(2)}`}</p>
-          <Button color="primary" variant='light' isIconOnly onPress={handleAddToCart}>
+          <Button color="primary" variant='light' isIconOnly onPress={handleModalOpen}>
             <FaCartPlus size={15} />
           </Button>
         </CardFooter>
       </Card>
+
       {isOpen && (
         <Modal
           placement='center'
@@ -105,17 +130,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, nombre, precio, imagen, m
                   </div>
                 </ModalBody>
                 <ModalFooter>
-                  <div
-                    className="flex items-center justify-center gap-4"
-                  >
+                  <div className="flex items-center justify-center gap-4">
                     <span className='font-light text-sm'>Cantidad</span>
                     <Input
                       type="number"
                       variant='underlined'
-                      defaultValue="1"
+                      value={cantidad.toString()}
                       min="1"
                       max={existencias}
-                      onChange={(e) => setCantidad(parseInt(e.target.value))}
+                      onChange={handleQuantityChange}
                     />
                     <ButtonGroup>
                       <Button color="primary" onPress={handleAddToCart}>
