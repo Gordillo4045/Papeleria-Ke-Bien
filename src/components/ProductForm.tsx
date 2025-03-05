@@ -86,7 +86,7 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
             });
             setPreviewUrl(null);
         }
-    }, [editProduct]);
+    }, [editProduct, isOpen]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
