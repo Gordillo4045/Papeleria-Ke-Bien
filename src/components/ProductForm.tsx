@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
     Input,
     Button,
     ButtonGroup,
     Image,
-    Tooltip
+    Tooltip,
+    Textarea,
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerBody
 } from "@heroui/react";
 import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -27,6 +28,8 @@ interface FormData {
     marca: string;
     modelo: string;
     precio: string;
+    categoria: string;
+    descripcion: string;
     imagen: File | null;
     existencias: string;
 }
@@ -37,6 +40,8 @@ interface Producto {
     marca: string;
     modelo: string;
     precio: number;
+    categoria: string;
+    descripcion: string;
     imagen: string;
     existencias: string;
 }
@@ -47,6 +52,8 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
         marca: "",
         modelo: "",
         precio: "",
+        categoria: "",
+        descripcion: "",
         imagen: null,
         existencias: "",
     });
@@ -59,7 +66,9 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
                 nombre: editProduct.nombre,
                 marca: editProduct.marca,
                 modelo: editProduct.modelo,
+                categoria: editProduct.categoria,
                 precio: editProduct.precio.toString(),
+                descripcion: editProduct.descripcion,
                 imagen: null,
                 existencias: editProduct.existencias,
             });
@@ -70,6 +79,8 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
                 marca: "",
                 modelo: "",
                 precio: "",
+                categoria: "",
+                descripcion: "",
                 imagen: null,
                 existencias: "",
             });
@@ -116,6 +127,8 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
                 marca: formData.marca,
                 modelo: formData.modelo,
                 precio: parseFloat(formData.precio),
+                categoria: formData.categoria,
+                descripcion: formData.descripcion,
                 imagen: imageUrl,
                 existencias: parseInt(formData.existencias),
             });
@@ -125,6 +138,8 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
                 marca: formData.marca,
                 modelo: formData.modelo,
                 precio: parseFloat(formData.precio),
+                categoria: formData.categoria,
+                descripcion: formData.descripcion,
                 imagen: imageUrl,
                 existencias: parseInt(formData.existencias),
             });
@@ -134,7 +149,7 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!formData.nombre || !formData.marca || !formData.modelo || !formData.precio || !formData.existencias) {
+        if (!formData.nombre || !formData.marca || !formData.modelo || !formData.precio || !formData.existencias || !formData.categoria || !formData.descripcion) {
             toast.error("Por favor, complete todos los campos obligatorios.");
             return;
         }
@@ -165,14 +180,14 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} placement="top-center" scrollBehavior='inside'>
-            <ModalContent>
-                <ModalHeader>
+        <Drawer isOpen={isOpen} onClose={onClose} scrollBehavior='inside'>
+            <DrawerContent>
+                <DrawerHeader>
                     <h2 className="text-2xl font-bold">
                         {editProduct ? "Editar Producto" : "Agregar Producto"}
                     </h2>
-                </ModalHeader>
-                <ModalBody>
+                </DrawerHeader>
+                <DrawerBody>
                     <form onSubmit={handleSubmit} className="w-full items-center space-y-11 px-6">
                         <Input
                             label="Nombre"
@@ -198,7 +213,6 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
                             value={formData.modelo}
                             onChange={handleInputChange}
                             variant='underlined'
-
                         />
                         <Input
                             label="Precio"
@@ -215,6 +229,22 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
                             name="existencias"
                             type="number"
                             value={formData.existencias}
+                            onChange={handleInputChange}
+                            variant='underlined'
+                        />
+                        <Input
+                            label="Categoria"
+                            labelPlacement="outside"
+                            name="categoria"
+                            value={formData.categoria}
+                            onChange={handleInputChange}
+                            variant='underlined'
+                        />
+                        <Textarea
+                            label="Descripcion"
+                            labelPlacement='outside'
+                            name='descripcion'
+                            value={formData.descripcion}
                             onChange={handleInputChange}
                             variant='underlined'
                         />
@@ -263,8 +293,8 @@ export default function ProductForm({ isOpen, onClose, editProduct, onUpdate }: 
                             </ButtonGroup>
                         </div>
                     </form>
-                </ModalBody>
-            </ModalContent>
-        </Modal>
+                </DrawerBody>
+            </DrawerContent>
+        </Drawer>
     );
 }
