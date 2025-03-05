@@ -24,6 +24,8 @@ interface Producto {
     marca: string;
     modelo: string;
     precio: number;
+    categoria: string;
+    descripcion: string;
     imagen: string;
     existencias: string;
 }
@@ -36,7 +38,7 @@ interface ProductTableProps {
     onRefresh: () => void;
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["nombre", "marca", "modelo", "precio", "existencias", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["nombre", "marca", "modelo", "precio", "existencias", "categoria", "descripcion", "actions"];
 
 export default function ProductTable({ productos, onAddNew, onEdit, onDelete, onRefresh }: ProductTableProps) {
     const [filterValue, setFilterValue] = useState("");
@@ -57,6 +59,8 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
         { uid: "modelo", name: "Modelo" },
         { uid: "precio", name: "Precio" },
         { uid: "existencias", name: "Existencias" },
+        { uid: "categoria", name: "Categoria" },
+        { uid: "descripcion", name: "Descripcion" },
         { uid: "actions", name: "Acciones" },
     ], []);
 
@@ -100,6 +104,10 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
                 return <span>${product.precio.toFixed(2)}</span>;
             case "existencias":
                 return <span>{product.existencias}</span>;
+            case "categoria":
+                return <span>{product.categoria}</span>;
+            case "descripcion":
+                return <span>{product.descripcion}</span>;
             case "actions":
                 return (
                     <div className="flex justify-start gap-2">
