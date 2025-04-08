@@ -103,10 +103,15 @@ const Home: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50/30 dark:bg-black">
             <div className="pt-7 flex items-center justify-between max-w-6xl mx-auto">
-                <BlurFade delay={0.25} >
-                    <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 text-center">
-                        Papeleria Ke Bien
-                    </h2>
+                <BlurFade delay={0.25} className="flex items-center gap-2">
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        width={100}
+                        height={50}
+                        isBlurred
+                    />
+
                 </BlurFade>
                 <div className="flex gap-1 items-center">
                     <span className="font-thin">Tema</span>
