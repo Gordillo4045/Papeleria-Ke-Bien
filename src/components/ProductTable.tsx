@@ -60,7 +60,6 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
         { uid: "precio", name: "Precio" },
         { uid: "existencias", name: "Existencias" },
         { uid: "categoria", name: "Categoria" },
-        { uid: "descripcion", name: "Descripcion" },
         { uid: "actions", name: "Acciones" },
     ], []);
 
@@ -106,8 +105,7 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
                 return <span>{product.existencias}</span>;
             case "categoria":
                 return <span>{product.categoria}</span>;
-            case "descripcion":
-                return <span>{product.descripcion}</span>;
+
             case "actions":
                 return (
                     <div className="flex justify-start gap-2">
@@ -221,7 +219,7 @@ export default function ProductTable({ productos, onAddNew, onEdit, onDelete, on
             bottomContent={bottomContent}
             bottomContentPlacement="outside"
             classNames={{
-                wrapper: "max-h-[582px]",
+                wrapper: "max-h-[582px] md:max-h-[750px]",
             }}
             sortDescriptor={sortDescriptor}
             topContent={topContent}
