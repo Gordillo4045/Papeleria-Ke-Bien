@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Button } from "@heroui/react";
+import { Button, ScrollShadow } from "@heroui/react";
 
 export interface Tag {
     name: string;
@@ -15,13 +15,13 @@ interface TagFilterProps {
 
 const getTagColor = (index: number): string => {
     const colors = [
-        'bg-lime-200 text-lime-700',
-        'bg-green-200 text-green-700',
-        'bg-blue-200 text-blue-700',
-        'bg-pink-200 text-pink-700',
-        'bg-orange-200 text-orange-700',
-        'bg-purple-200 text-purple-700',
-        'bg-yellow-200 text-yellow-700',
+        'bg-lime-100 text-lime-700',
+        'bg-green-100 text-green-700',
+        'bg-blue-100 text-blue-700',
+        'bg-pink-100 text-pink-700',
+        'bg-orange-100 text-orange-700',
+        'bg-purple-100 text-purple-700',
+        'bg-yellow-100 text-yellow-700',
         'bg-gray-300 text-gray-700',
     ];
     return colors[index % colors.length];
@@ -32,12 +32,19 @@ const TagFilter = ({ onTagsChange, categories, selectedCategories = [] }: TagFil
     const [isHover, setIsHover] = useState(false);
     const [isLayoutAnimation, setIsLayoutAnimation] = useState(false);
 
-    useEffect(() => {
-        if (selectedCategories.length === 0) {
-            setSelectedTags([]);
-        }
-    }, [selectedCategories]);
+    // useEffect(() => {
+    //     if (selectedCategories.length === 0) {
+    //         setSelectedTags([]);
+    //     }
+    // }, [selectedCategories]);
 
+    useEffect(() => {
+        const initialTags = selectedCategories.map((category) => ({
+            name: category,
+            className: getTagColor(categories.indexOf(category))
+        }));
+        setSelectedTags(initialTags);
+    }, [selectedCategories, categories]);
     const tags: Tag[] = categories.map((category, index) => ({
         name: category,
         className: getTagColor(index)
@@ -118,7 +125,7 @@ const TagFilter = ({ onTagsChange, categories, selectedCategories = [] }: TagFil
 
             <motion.div
                 layout
-                className="w-full rounded-lg"
+                className="w-full rounded-lg "
             >
                 <div className="flex items-center justify-between mb-3">
                     <motion.h3 layout="position" className="text-sm font-medium">
@@ -134,7 +141,7 @@ const TagFilter = ({ onTagsChange, categories, selectedCategories = [] }: TagFil
                         </motion.span>
                     )}
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <ScrollShadow className="flex flex-wrap gap-2 h-[250px] " hideScrollBar >
                     {tags
                         .filter((item) => !selectedTagsNames.includes(item.name))
                         .map((tag) => (
@@ -142,12 +149,12 @@ const TagFilter = ({ onTagsChange, categories, selectedCategories = [] }: TagFil
                                 key={tag.name}
                                 layoutId={tag.name}
                                 onClick={() => handleTagSelect(tag)}
-                                className={`capitalize text-sm font-medium inline-flex px-3 py-1 rounded-full cursor-pointer ${tag.className}`}
+                                className={`capitalize text-xs font-medium inline-flex px-3 py-1 rounded-full cursor-pointer ${tag.className}`}
                             >
                                 <motion.span layout="position">{tag.name}</motion.span>
                             </motion.div>
                         ))}
-                </div>
+                </ScrollShadow>
             </motion.div>
         </div>
     );
