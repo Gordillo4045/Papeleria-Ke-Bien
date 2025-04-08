@@ -7,6 +7,7 @@ import { HeroUIProvider } from "@heroui/react";
 import { CartProvider } from "./components/CartContext";
 import ThemeProvider from "./components/ThemeProvider";
 import { useTheme } from "./components/useTheme";
+import Catalogo from "./components/Catalogo";
 
 function AppContent() {
   const { theme } = useTheme();
@@ -16,11 +17,12 @@ function AppContent() {
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/catalogo' element={<Catalogo />} />
           <Route path='/controlpanel' element={<ProductsTable />} />
           <Route path='*' element={<ErrorPage />} />
         </Routes>
       </Router>
-      <Toaster richColors position="bottom-right" />
+      <Toaster richColors position="bottom-center" />
     </div>
   );
 }
