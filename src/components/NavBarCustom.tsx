@@ -1,4 +1,4 @@
-import { Navbar, NavbarContent, NavbarBrand, Button, Badge, Link } from "@heroui/react";
+import { Navbar, NavbarContent, NavbarBrand, Button, Badge, Link, Image } from "@heroui/react";
 import SearchInput from "./SearchInput";
 import { useCart } from "./CartContext";
 import { useState } from "react";
@@ -27,10 +27,21 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
 
   return (
     <>
-      <Navbar >
-        <NavbarBrand>
-          <Link href="/" color="foreground" >
-            <p className="font-bold text-lg text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p>
+      <Navbar  >
+        <NavbarBrand className="flex gap-3 items-center">
+          <Link href="/" color="foreground" className="flex items-center">
+            <div className="flex-shrink-0 w-[100px]">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={100}
+                height={50}
+                isBlurred
+                className="object-contain"
+              />
+            </div>
+
+            {/* <p className="font-bold text-lg text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p> */}
           </Link>
 
         </NavbarBrand>
@@ -40,6 +51,8 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
             onChange={onSearchChange}
             className="min-w-96 "
           />
+
+
         </NavbarContent>
         <NavbarContent as="div" justify="end" className="gap-2 flex">
           <ThemeToggle />
