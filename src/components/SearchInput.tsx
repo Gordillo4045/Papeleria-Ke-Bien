@@ -15,7 +15,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, onChange, className = 
                 base: `max-w-full sm:max-w-[16rem] h-10 ${className}`,
                 mainWrapper: "h-full",
                 input: "text-small",
-                inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                inputWrapper: "h-full font-normal text-default-500 bg-transparent border-1 border-default-300 dark:border-default-600 rounded-full shadow-xs focus:ring-0 focus:border-primary-500 dark:focus:border-primary-500",
             }}
             placeholder="Buscar..."
             size="sm"
@@ -23,6 +23,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, onChange, className = 
             type="search"
             value={value}
             onValueChange={onChange}
+            isClearable
         />
     );
 };
