@@ -142,7 +142,7 @@ export default function App() {
                     )}
                 </NavbarContent>
             </Navbar>
-            <div className="flex flex-row p-4 max-w-5xl md:mx-auto shadow-inner rounded-xl mx-4">
+            <div className="flex flex-row p-4 max-w-6xl md:mx-auto shadow-inner rounded-xl mx-4">
 
                 <LoginForm
                     isOpen={isLoginModalOpen}

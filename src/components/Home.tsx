@@ -1,241 +1,285 @@
-
-import { useEffect, useRef, useState } from "react";
-import { Button, Card, CardBody, Pagination } from "@heroui/react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { motion, AnimatePresence } from "framer-motion";
-import Filters from "./Filter";
-import ProductCard from "./Card";
+import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
-import SearchInput from "./SearchInput";
-import CustomNavbar from "./NavBarCustom";
-import { MdFilterAlt } from "react-icons/md";
-//@ts-ignore
-import { SearchIcon } from "../assets/SearchIcon"
-import CartModal from "./CartModal";
+import { Carusel } from "./carusel";
+import BlurFade from "./ui/BlurFade";
+import { Button, Card, CardBody, CardFooter, Image, Link } from "@heroui/react";
+import ThemeToggle from "./ThemeToggle";
+import { Product, getFeaturedProducts } from "./Catalogo";
+import { HeroSection } from "./HeroSection";
+import { FaArrowRight } from "react-icons/fa";
+import { BiPlus } from "react-icons/bi";
 
-interface Product {
-    id: string;
-    nombre: string;
-    marca: string;
-    modelo: string;
-    precio: number;
-    imagen: string;
-    existencias: string;
-}
+const getFeaturedCategories = (categories: string[]) => {
+    return [...new Set(categories)].sort().slice(0, 5);
+};
+
+const getCategoryImage = (id: number) => {
+    const images = {
+        0: 'https://plus.unsplash.com/premium_photo-1676422355165-d809008b8342',
+        1: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b',
+        2: 'https://images.unsplash.com/photo-1509191436522-d296cf87d244',
+        3: 'https://plus.unsplash.com/premium_photo-1664110691134-df4aa034c322',
+        4: 'https://plus.unsplash.com/premium_photo-1723651610443-4f4f27c529a0',
+    };
+    return images[id as keyof typeof images] || 'https://picsum.photos/seed/1/600/400';
+};
 
 const Home: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
-    const [precioRange, setPrecioRange] = useState<[number, number]>([0, 500]);
-    const [selectedMarcas, setSelectedMarcas] = useState<string[]>([]);
-    const [selectedProductos, setSelectedProductos] = useState<string[]>([]);
-    const [searchTerm, setSearchTerm] = useState<string>("");
-    const [isCartOpen, setIsCartOpen] = useState(false);
-
-    const handleResize = () => {
-        const screenWidth = window.innerWidth;
-
-        if (screenWidth < 768) {
-            setItemsPerPage(10);
-        } else if (screenWidth < 1100) {
-            setItemsPerPage(12);
-        } else {
-            setItemsPerPage(20);
-        }
-    };
+    const [categories, setCategories] = useState<string[]>([]);
+    const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        setCurrentPage(1);
-        handleResize()
-        window.addEventListener('resize', handleResize);
-
-        const fetchProducts = async () => {
+        const fetchData = async () => {
             const db = getFirestore();
             const productosCollection = collection(db, "productos");
 
             try {
                 const querySnapshot = await getDocs(productosCollection);
-
-                const data = querySnapshot.docs.map((doc) => ({
+                const products = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
                 })) as Product[];
 
-                setProducts(data);
-                const validPrecioRange: [number, number] = [
-                    Math.min(precioRange[0], 500),
-                    Math.min(precioRange[1], 500)
-                ];
-                setPrecioRange(validPrecioRange);
+                setCategories(getFeaturedCategories(products.map(product => product.categoria)));
+                setFeaturedProducts(getFeaturedProducts(products));
             } catch (error) {
-                console.error("Error al obtener productos de Firebase", error);
+                console.error("Error fetching data:", error);
             }
         };
-
-        fetchProducts();
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [searchTerm]);
-
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-    const filteredProducts = products
-        .filter((product) => product.precio >= precioRange[0] && product.precio <= precioRange[1])
-        .filter((product) => selectedMarcas.length === 0 || selectedMarcas.includes(product.marca))
-        .filter((product) => selectedProductos.length === 0 || selectedProductos.includes(product.nombre))
-        .filter(
-            (product) =>
-                searchTerm === "" ||
-                product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.marca.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-
-    const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
-
-    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-    const totalItems = filteredProducts.length;
-    const totalPages = totalItems > 0 ? Math.ceil(totalItems / itemsPerPage) : 1;
-
-    const handleResetFilters = () => {
-        setSelectedMarcas([]);
-        setSelectedProductos([]);
-        setPrecioRange([0, 500]);
-        setSearchTerm("");
-    };
-
-    const [isOpenFilters, setIsOpenFilters] = useState(false);
-    const sidebarRef = useRef<HTMLDivElement>(null);
-
-    const handleOpenFilter = () => {
-        setIsOpenFilters(!isOpenFilters);
-    }
-
-    const handleClickOutside = (event: MouseEvent) => {
-        if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
-            setIsOpenFilters(false);
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
+        fetchData();
     }, []);
+    console.log(categories);
 
-    const handleOpenCart = () => {
-        setIsCartOpen(true);
+    const handleCategoryClick = (category: string) => {
+        navigate(`/catalogo?categoria=${category}`);
     };
 
-    const handleCloseCart = () => {
-        setIsCartOpen(false);
+    const handleProductClick = (ProductName: string) => {
+        navigate(`/catalogo?producto=${ProductName}`);
+    };
+
+    const container = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const item = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    };
+
+    const categoryContainer = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.3
+            }
+        }
+    };
+
+    const categoryItem = {
+        hidden: { opacity: 0, y: 20 },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5,
+                ease: "easeOut"
+            }
+        }
     };
 
     return (
-        <div className="container min-h-screen md:mx-auto grid grid-rows-[auto_1fr_auto] ">
-            <CustomNavbar onSearchChange={setSearchTerm} SearchTerm={searchTerm} />
-            <div className="flex flex-col lg:flex-row">
-                <div className="lg:w-1/4 lg:p-4 lg:mb-0 shadow-sm lg:rounded-tl-xl flex flex-col">
-                    <Card className="lg:hidden mx-5 mb-3" radius="sm">
-                        <CardBody className="flex flex-row gap-2">
-                            <Button onPress={handleOpenFilter} variant="light" color="primary" startContent={<MdFilterAlt />} className="w-[35%]">Filtros</Button>
-                            <SearchInput
-                                value={searchTerm}
-                                onChange={setSearchTerm}
-                                className=""
-                            />
-                        </CardBody>
-                    </Card>
+        <div className="min-h-screen bg-gray-50/30 dark:bg-black">
+            <div className="pt-7 flex items-center justify-between max-w-6xl mx-auto">
+                <BlurFade delay={0.25} className="flex items-center gap-2">
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        width={100}
+                        height={50}
+                        isBlurred
+                    />
 
-                    <AnimatePresence>
-                        {(isOpenFilters || window.innerWidth >= 1024) && (
-                            <>
-                                {window.innerWidth < 1024 && (
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 0.5 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="fixed inset-0 bg-black z-40"
-                                        onClick={() => setIsOpenFilters(false)}
-                                    />
-                                )}
-                                <motion.div
-                                    ref={sidebarRef}
-                                    initial={{ x: "-100%", opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    exit={{ x: "-100%", opacity: 0 }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                    className={`${window.innerWidth < 1024 ? "fixed top-0 left-0 h-full w-[65%] p-2 rounded-r-md bg-white z-50 overflow-y-auto dark:bg-black" : ""} lg:block`}
+                </BlurFade>
+                <div className="flex gap-1 items-center">
+                    <span className="font-thin">Tema</span>
+                    <ThemeToggle />
+                </div>
+
+            </div>
+            <HeroSection />
+
+            <motion.section
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="relative w-full"
+            >
+                <Carusel />
+                <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-gray-50/30 dark:from-black to-transparent"
+                />
+            </motion.section>
+            <section className="py-16 md:py-24 bg-background max-w-6xl mx-auto">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Productos Destacados</h2>
+                        <p className="text-foreground-500 max-w-2xl mx-auto text-lg">
+                            Descubre nuestra selección de productos premium para elevar tu experiencia de escritura y organización.
+                        </p>
+                    </motion.div>
+
+                    <motion.div
+                        variants={container}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true }}
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full"
+                    >
+                        {featuredProducts.map((product) => (
+                            <motion.div key={product.id} variants={item} className="w-full">
+                                <Card
+                                    isPressable
+                                    className="border border-divider overflow-hidden w-full h-full"
+                                    shadow="sm"
+                                    onPress={() => handleProductClick(product.nombre)}
                                 >
-                                    <Filters
-                                        precioRange={precioRange}
-                                        onPrecioRangeChange={setPrecioRange}
-                                        selectedMarcas={selectedMarcas}
-                                        onMarcasChange={setSelectedMarcas}
-                                        selectedProductos={selectedProductos}
-                                        onProductosChange={setSelectedProductos}
-                                        onSearchChange={setSearchTerm}
-                                        onResetFilters={handleResetFilters}
-                                        onClose={() => setIsOpenFilters(false)}
-                                    />
-                                </motion.div>
-                            </>
-                        )}
-                    </AnimatePresence>
-                </div>
-                <div className="lg:w-3/4 shadow-inner lg:rounded-tr-xl min-h-full ">
-                    {currentItems.length === 0 ? (
-                        <div className=" flex items-center justify-center align-middle min-h-full text-sm text-center text-gray-500 pointer-events-none">
-                            No se encontraron productos con los filtros seleccionados.
-                        </div>
-                    ) : (
-                        <>
-                            <CartModal isOpen={isCartOpen} onClose={handleCloseCart} />
-                            <div className="grid grid-rows-[auto_1fr] min-h-full">
-                                <div className="p-4 place-items-center grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  gap-4">
-                                    {currentItems.map((item) => (
-                                        <ProductCard
-                                            key={item.id}
-                                            id={item.id}
-                                            nombre={item.nombre}
-                                            precio={item.precio}
-                                            imagen={item.imagen}
-                                            marca={item.marca}
-                                            modelo={item.modelo}
-                                            existencias={item.existencias}
-                                            onOpenCart={handleOpenCart}
+                                    <CardBody className="p-0 overflow-hidden bg-white">
+                                        <Image
+                                            width="100%"
+
+                                            isZoomed
+                                            src={product.imagen}
+                                            alt={product.nombre}
+                                            className="w-full object-contain h-[200px] "
                                         />
-                                    ))}
-                                </div>
-                                <div className="flex justify-center lg:items-end">
-                                    <Pagination
-                                        total={totalPages}
-                                        initialPage={currentPage}
-                                        page={currentPage}
-                                        variant={"light"}
-                                        onChange={paginate}
-                                        color="default"
-                                        classNames={{
-                                            cursor: "bg-foreground text-background",
-                                        }}
-                                        showControls
-                                        loop
-                                        showShadow
-                                    />
-                                </div>
-                            </div>
-                        </>
-                    )}
+
+                                    </CardBody>
+                                    <CardFooter className="flex flex-col items-start text-left">
+                                        <p className="text-xs text-primary font-medium">{product.categoria}</p>
+                                        <h3 className="font-semibold text-lg mt-1">{product.nombre}</h3>
+                                        <div className="flex items-center justify-between w-full mt-2">
+                                            <p className="font-bold text-lg">${product.precio.toFixed(2)}</p>
+                                            <Button
+                                                isIconOnly
+                                                color="primary"
+                                                variant="flat"
+                                                aria-label="Añadir al carrito"
+                                                onPress={() => handleProductClick(product.nombre)}
+                                            >
+                                                <BiPlus />
+                                            </Button>
+                                        </div>
+                                    </CardFooter>
+                                </Card>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                        className="text-center mt-12"
+                    >
+                        <Button
+                            as={Link}
+                            href="catalogo"
+                            size="lg"
+                            color="primary"
+                            variant="bordered"
+                            endContent={<FaArrowRight />}
+                            className="font-medium"
+                        >
+                            Ver todos los productos
+                        </Button>
+                    </motion.div>
                 </div>
-            </div>
-            <div className="rounded-b-lg shadow-xl">
-                <Footer />
-            </div>
-        </div>
+            </section>
+            <section className="py-8 bg-default-50 dark:bg-default-900/20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Explora por Categorías</h2>
+                        <p className="text-foreground-500 max-w-2xl mx-auto text-lg">
+                            Encuentra exactamente lo que necesitas navegando por nuestras categorías cuidadosamente seleccionadas.
+                        </p>
+                    </motion.div>
+
+                    <div className="flex h-full w-full items-center justify-center">
+                        <motion.div
+                            variants={categoryContainer}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true, margin: "-100px" }}
+                            className="grid h-96 w-full gap-4 p-2 grid-cols-6 grid-rows-3 rounded-lg"
+                        >
+                            {categories.map((category, index) => {
+                                const gridClasses = index === 0
+                                    ? "col-span-4 row-span-2"
+                                    : index === 1
+                                        ? "col-span-2 row-span-1"
+                                        : index === 2
+                                            ? "col-span-2 row-span-2"
+                                            : "col-span-2 row-span-1";
+
+                                return (
+                                    <motion.div
+                                        key={category}
+                                        variants={categoryItem}
+                                        className={`relative ${gridClasses} rounded-lg shadow-md overflow-hidden group cursor-pointer`}
+                                        whileHover={{ scale: 1.02 }}
+                                        onClick={() => handleCategoryClick(category)}
+                                    >
+                                        <Image
+                                            src={getCategoryImage(index)}
+                                            alt={category}
+                                            className="transition-all duration-300 group-hover:scale-110 object-cover w-full h-full opacity-70"
+                                            removeWrapper
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+                                        <div className="absolute inset-0 flex h-full w-full flex-col justify-end p-1 z-10">
+                                            <div className="backdrop-blur-md bg-black/30 rounded-full p-2 w-1/2">
+                                                <h2 className=" text-xl font-bold leading-tight text-white drop-shadow-lg relative text-center">
+                                                    {category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()}</h2>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </motion.div>
+                    </div>
+
+                </div>
+            </section >
+            <Footer />
+        </div >
     );
 };
 

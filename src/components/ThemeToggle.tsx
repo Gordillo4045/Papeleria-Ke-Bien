@@ -13,7 +13,7 @@ const ThemeToggle = () => {
 
     return (
         <Tooltip color='foreground' content="Cambiar tema" showArrow={true} offset={15}>
-            <label className="relative flex justify-center items-center cursor-pointer text-xl text-center select-none fill-current ml-4 lg:ml-5">
+            <label className="relative flex justify-center items-center cursor-pointer text-xl text-center select-none fill-current ml-4 lg:ml-5 border border-gray-300 dark:border-gray-600 rounded-full w-10 h-10 shadow-sm ">
                 <input
                     type="checkbox"
                     className="absolute opacity-0 cursor-pointer h-0 w-0"

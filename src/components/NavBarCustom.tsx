@@ -27,7 +27,7 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
 
   return (
     <>
-      <Navbar>
+      <Navbar  >
         <NavbarBrand className="flex gap-3 items-center">
           <Link href="/" color="foreground" className="flex items-center">
             <div className="flex-shrink-0 w-[100px]">
@@ -43,18 +43,20 @@ const CustomNavbar: React.FC<NavbarProps> = ({ onSearchChange, SearchTerm }) => 
 
             {/* <p className="font-bold text-lg text-inherit [text-wrap:wrap] md:[text-wrap:nowrap] md:text-3xl ">Papeleria Ke Bien</p> */}
           </Link>
-          <ThemeToggle />
+
         </NavbarBrand>
-        <NavbarContent as="div" className="items-center w-full hidden lg:flex " justify="center">
+        <NavbarContent className="items-center w-full hidden lg:flex " justify="center">
           <SearchInput
             value={SearchTerm}
             onChange={onSearchChange}
-            className=""
+            className="min-w-96 "
           />
 
 
         </NavbarContent>
-        <NavbarContent as="div" justify="end">
+        <NavbarContent as="div" justify="end" className="gap-2 flex">
+          <ThemeToggle />
+
           <Badge color="danger" content={totalProductos} shape="circle" size="sm" showOutline={false}
           >
             <Button isIconOnly radius="full" variant="light" onPress={handleCartModalOpen}>
