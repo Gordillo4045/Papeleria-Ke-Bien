@@ -4,20 +4,20 @@ import { GrCatalog } from "react-icons/gr";
 
 export function HeroSection() {
     return (
-        <div className="relative overflow-hidden bg-gradient-to-b from-background to-primary-50/50 dark:from-background dark:to-primary-900/10 py-16 md:py-24">
+        <div className="relative overflow-hidden bg-gradient-to-b from-background to-primary-50/50 dark:from-background dark:to-primary-900/10 py-8 sm:py-16 md:py-24">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="flex flex-col gap-6"
+                        className="flex flex-col gap-4 sm:gap-6"
                     >
                         <motion.span
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
-                            className="text-primary font-semibold tracking-wider text-sm"
+                            className="text-primary font-semibold tracking-wider text-xs sm:text-sm"
                         >
                             NUEVA COLECCIÓN 2025
                         </motion.span>
@@ -25,7 +25,7 @@ export function HeroSection() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, delay: 0.3 }}
-                            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight"
+                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight"
                         >
                             Artículos de papelería <span className="text-primary">premium</span>
                         </motion.h1>
@@ -33,7 +33,7 @@ export function HeroSection() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, delay: 0.4 }}
-                            className="text-gray-600 text-lg md:text-xl max-w-lg"
+                            className="text-gray-600 text-base sm:text-lg md:text-xl max-w-lg"
                         >
                             Descubre nuestra colección de artículos de papelería de alta calidad, diseñados para inspirar tu creatividad y elevar tu experiencia de escritura.
                         </motion.p>
@@ -41,7 +41,7 @@ export function HeroSection() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, delay: 0.5 }}
-                            className="flex flex-wrap gap-4"
+                            className="flex w-full sm:w-auto"
                         >
                             <Button
                                 as={Link}
@@ -50,7 +50,7 @@ export function HeroSection() {
                                 color="secondary"
                                 startContent={<GrCatalog size={15} />}
                                 size="lg"
-                                className="font-medium"
+                                className="w-full sm:w-auto font-medium text-base z-50"
                             >
                                 Ver Catalogo
                             </Button>

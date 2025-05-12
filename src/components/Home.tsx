@@ -102,49 +102,50 @@ const Home: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-50/30 dark:bg-black">
-            <div className="pt-7 flex items-center justify-between max-w-6xl mx-auto">
+            <div className="pt-4 sm:pt-7 flex items-center justify-between max-w-6xl mx-auto px-4 sm:px-6">
                 <BlurFade delay={0.25} className="flex items-center gap-2">
                     <Image
                         src="/logo.png"
                         alt="Logo"
                         width={100}
                         height={50}
+                        className="sm:w-[100px] sm:h-[50px]"
                         isBlurred
                     />
-
                 </BlurFade>
                 <div className="flex gap-1 items-center">
-                    <span className="font-thin">Tema</span>
+                    <span className="font-thin text-sm sm:text-base">Tema</span>
                     <ThemeToggle />
                 </div>
-
             </div>
+
             <HeroSection />
 
             <motion.section
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="relative w-full"
+                className="relative w-full px-2 sm:px-4"
             >
                 <Carusel />
                 <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-gray-50/30 dark:from-black to-transparent"
+                    className="absolute inset-x-0 bottom-0 h-16 sm:h-24 bg-gradient-to-t from-gray-50/30 dark:from-black to-transparent"
                 />
             </motion.section>
-            <section className="py-16 md:py-24 bg-background max-w-6xl mx-auto">
+
+            <section className="py-8 sm:py-16 md:py-24 bg-background">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
+                        className="text-center mb-8 sm:mb-16"
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Productos Destacados</h2>
-                        <p className="text-foreground-500 max-w-2xl mx-auto text-lg">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-foreground">Productos Destacados</h2>
+                        <p className="text-foreground-500 max-w-2xl mx-auto text-base sm:text-lg px-4">
                             Descubre nuestra selección de productos premium para elevar tu experiencia de escritura y organización.
                         </p>
                     </motion.div>
@@ -154,7 +155,7 @@ const Home: React.FC = () => {
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: true }}
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 w-full"
                     >
                         {featuredProducts.map((product) => (
                             <motion.div key={product.id} variants={item} className="w-full">
@@ -167,23 +168,23 @@ const Home: React.FC = () => {
                                     <CardBody className="p-0 overflow-hidden bg-white">
                                         <Image
                                             width="100%"
-
                                             isZoomed
                                             src={product.imagen}
                                             alt={product.nombre}
-                                            className="w-full object-contain h-[200px] "
+                                            className="w-full object-contain h-[150px] sm:h-[200px]"
                                         />
-
                                     </CardBody>
-                                    <CardFooter className="flex flex-col items-start text-left">
+                                    <CardFooter className="flex flex-col items-start text-left p-3 sm:p-4">
                                         <p className="text-xs text-primary font-medium">{product.categoria}</p>
-                                        <h3 className="font-semibold text-lg mt-1">{product.nombre}</h3>
+                                        <h3 className="font-semibold text-base sm:text-lg mt-1">{product.nombre}</h3>
                                         <div className="flex items-center justify-between w-full mt-2">
-                                            <p className="font-bold text-lg">${product.precio.toFixed(2)}</p>
+                                            <p className="font-bold text-base sm:text-lg">${product.precio.toFixed(2)}</p>
                                             <Button
                                                 isIconOnly
                                                 color="primary"
                                                 variant="flat"
+                                                size="sm"
+                                                className="sm:size-md"
                                                 aria-label="Añadir al carrito"
                                                 onPress={() => handleProductClick(product.nombre)}
                                             >
@@ -201,7 +202,7 @@ const Home: React.FC = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.4 }}
-                        className="text-center mt-12"
+                        className="text-center mt-8 sm:mt-12"
                     >
                         <Button
                             as={Link}
@@ -210,24 +211,27 @@ const Home: React.FC = () => {
                             color="primary"
                             variant="bordered"
                             endContent={<FaArrowRight />}
-                            className="font-medium"
+                            className="font-medium w-full sm:w-auto"
                         >
                             Ver todos los productos
                         </Button>
                     </motion.div>
                 </div>
             </section>
-            <section className="py-8 bg-default-50 dark:bg-default-900/20">
+
+            <section className="py-8 sm:py-16 bg-default-50 dark:bg-default-900/20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="text-center mb-16"
+                        className="text-center mb-8 sm:mb-16"
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Explora por Categorías</h2>
-                        <p className="text-foreground-500 max-w-2xl mx-auto text-lg">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-foreground">
+                            Explora por Categorías
+                        </h2>
+                        <p className="text-foreground-500 max-w-2xl mx-auto text-base sm:text-lg px-4">
                             Encuentra exactamente lo que necesitas navegando por nuestras categorías cuidadosamente seleccionadas.
                         </p>
                     </motion.div>
@@ -238,36 +242,38 @@ const Home: React.FC = () => {
                             initial="hidden"
                             whileInView="show"
                             viewport={{ once: true, margin: "-100px" }}
-                            className="grid h-96 w-full gap-4 p-2 grid-cols-6 grid-rows-3 rounded-lg"
+                            className="grid sm:h-96 w-full gap-3 sm:gap-4 p-2 grid-cols-1 sm:grid-cols-6 sm:grid-rows-3 auto-rows-fr rounded-lg"
                         >
                             {categories.map((category, index) => {
                                 const gridClasses = index === 0
-                                    ? "col-span-4 row-span-2"
+                                    ? "sm:col-span-4 sm:row-span-2"
                                     : index === 1
-                                        ? "col-span-2 row-span-1"
+                                        ? "sm:col-span-2 sm:row-span-1"
                                         : index === 2
-                                            ? "col-span-2 row-span-2"
-                                            : "col-span-2 row-span-1";
+                                            ? "sm:col-span-2 sm:row-span-2"
+                                            : "sm:col-span-2 sm:row-span-1";
 
                                 return (
                                     <motion.div
                                         key={category}
                                         variants={categoryItem}
-                                        className={`relative ${gridClasses} rounded-lg shadow-md overflow-hidden group cursor-pointer`}
-                                        whileHover={{ scale: 1.02 }}
+                                        className={`relative ${gridClasses} h-[150px] sm:h-auto rounded-2xl shadow-md overflow-hidden cursor-pointer`}
+                                        whileHover={{ scale: 1.01 }}
+                                        transition={{ duration: 0.2 }}
                                         onClick={() => handleCategoryClick(category)}
                                     >
                                         <Image
                                             src={getCategoryImage(index)}
                                             alt={category}
-                                            className="transition-all duration-300 group-hover:scale-110 object-cover w-full h-full opacity-70"
+                                            className="w-full h-full object-cover"
                                             removeWrapper
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-                                        <div className="absolute inset-0 flex h-full w-full flex-col justify-end p-1 z-10">
-                                            <div className="backdrop-blur-md bg-black/30 rounded-full p-2 w-1/2">
-                                                <h2 className=" text-xl font-bold leading-tight text-white drop-shadow-lg relative text-center">
-                                                    {category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()}</h2>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-200" />
+                                        <div className="absolute inset-0 flex h-full w-full flex-col justify-end p-4 z-10">
+                                            <div className="backdrop-blur-sm bg-black/20 rounded-xl p-2 sm:p-3 w-full sm:w-auto inline-block">
+                                                <h2 className="text-base sm:text-xl font-bold leading-tight text-white drop-shadow-lg">
+                                                    {category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()}
+                                                </h2>
                                             </div>
                                         </div>
                                     </motion.div>
@@ -275,11 +281,10 @@ const Home: React.FC = () => {
                             })}
                         </motion.div>
                     </div>
-
                 </div>
-            </section >
+            </section>
             <Footer />
-        </div >
+        </div>
     );
 };
 
